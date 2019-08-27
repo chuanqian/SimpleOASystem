@@ -29,6 +29,12 @@
         select count(check_type_id) from check_type
     </select>
 
+    <select id="selectAllCheckType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from check_type
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from check_type
     where check_type_id = #{checkTypeId,jdbcType=INTEGER}

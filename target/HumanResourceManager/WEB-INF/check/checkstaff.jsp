@@ -34,20 +34,20 @@
         <!-- 工具栏开始 -->
         <div id="wu-toolbar">
             <div class="wu-toolbar-button">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openAdd()" plain="true">添加</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit()" plain="true">修改</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove()" plain="true">删除</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="cancel()" plain="true">取消</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-reload" onclick="reload()" plain="true">刷新</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-print" onclick="openAdd()" plain="true">打印</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-help" onclick="openEdit()" plain="true">帮助</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-undo" onclick="remove()" plain="true">撤销</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-redo" onclick="cancel()" plain="true">重做</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-sum" onclick="reload()" plain="true">总计</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-back" onclick="reload()" plain="true">返回</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="reload()" plain="true">提示</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="reload()" plain="true">保存</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openAdd()" plain="true">添加</a>--%>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit()" plain="true">考勤</a>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove()" plain="true">删除</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="cancel()" plain="true">取消</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-reload" onclick="reload()" plain="true">刷新</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-print" onclick="openAdd()" plain="true">打印</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-help" onclick="openEdit()" plain="true">帮助</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-undo" onclick="remove()" plain="true">撤销</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-redo" onclick="cancel()" plain="true">重做</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-sum" onclick="reload()" plain="true">总计</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-back" onclick="reload()" plain="true">返回</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="reload()" plain="true">提示</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="reload()" plain="true">保存</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>--%>
             </div>
             <div class="wu-toolbar-search">
                 <label>起始时间：</label><input class="easyui-datebox" style="width:100px">
@@ -75,14 +75,26 @@
     <form id="wu-form" method="post">
         <table>
             <tr>
-                <td width="60" align="right">id:</td>
-                <td><input type="text" name="sysId" class="wu-text"/></td>
+                <td width="60" align="right">员工姓名:</td>
+                <td>
+                    <input type="hidden" name="staffUid" class="wu-text"/>
+                    <input type="text" name="staffName" class="wu-text"/>
+                </td>
             </tr>
             <tr>
-                <td align="right">用户名:</td>
-                <td><input type="text" name="sysName" class="wu-text"/></td>
+                <td align="right">考勤类型:</td>
+                <td>
+                    <select name="staffStatusId" class="wu-text easyui-combobox" panelHeight="auto" id="checktype"
+                            >
+                    </select>
+                </td>
             </tr>
-
+            <tr>
+                <td align="right">奖惩金额:</td>
+                <td>
+                    <input id="money" type="text" name="checkTypeMoney" class="wu-text" readonly="readonly"/>
+                </td>
+            </tr>
         </table>
     </form>
 </div>
@@ -192,6 +204,15 @@
             return;
         }
         $('#wu-form').form('clear');
+        $("#checktype").combobox({
+            url: "getAllCheckTypeList.check",//url*
+            valueField: "checkTypeId", //相当于 option 中的 value 发送到后台的
+            textField: "checkTypeName",//option中间的内容 显示给用户看的
+            onSelect:function (v) {
+                console.log(v.checkTypeMoney);
+                $("#money").val(v.checkTypeMoney)
+            }
+        });
 
 
         //绑定值
@@ -215,25 +236,38 @@
         });
     }
 
+    function getMoney() {
+        var checkTypeid = $("#checktype").val();
+
+    }
+
 
     /**
      * 载入数据
+     * staffName;
+     private String staffSex;
+     private String staffPhone;
+     private String staffXueli;
+     private String checkStaffStatusName;
      */
     $('#wu-datagrid').datagrid({
-        url: 'selectSql.do',
+        url: 'checkStaffShow.check',
         method: "get",//提交方式
         rownumbers: true,//显示行号
         singleSelect: false,
         pagination: true, //如果表格需要支持分页，必须设置该选项为true
-        pageSize: 3, //表格中每页显示的行数
-        pageList: [3, 5, 10],
+        pageSize: 5, //表格中每页显示的行数
+        pageList: [5, 10],
         fitColumns: true,
         fit: true,
         columns: [[
             {checkbox: true},
-            {field: 'sysId', title: 'sysId', width: 100},
+            {field: 'staffName', title: '员工姓名', width: 100},
 
-            {field: 'sysName', title: '用户名', width: 100}
+            {field: 'staffSex', title: '员工性别', width: 100},
+            {field: 'staffPhone', title: '员工电话', width: 100},
+            {field: 'staffXueli', title: '员工学历', width: 100},
+            {field: 'checkStaffStatusName', title: '考勤状态', width: 100},
 
         ]]
     });

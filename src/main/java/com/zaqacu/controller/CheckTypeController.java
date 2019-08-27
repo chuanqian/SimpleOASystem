@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 public class CheckTypeController {
@@ -43,6 +44,12 @@ public class CheckTypeController {
     @ResponseBody
     public boolean removeCheckType(String id){
         return checkTypeService.removeCheckType(id);
+    }
+
+    @RequestMapping(value = "getAllCheckTypeList.check")
+    @ResponseBody
+    public List<CheckType> getAllCheckTypeList(){
+        return checkTypeService.getAllCheckTypeList();
     }
 
 }

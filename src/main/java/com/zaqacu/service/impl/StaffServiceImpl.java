@@ -42,6 +42,8 @@ public class StaffServiceImpl implements StaffService {
     private LoginAndOutService loginAndOutService;
     @Autowired
     private PersonnelService personnelService;
+    @Autowired
+    private CheckStaffStatusService checkStaffStatusService;
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -103,14 +105,15 @@ public class StaffServiceImpl implements StaffService {
         boolean flag5 = positionService.editPositionNumByPositionName(pnmsList);
         boolean flag6 = loginAndOutService.deleteByStaffUidList(staffUidList);
 
-        boolean flag7=personnelService.removeBatchByStaffUid(staffUidList);
+        boolean flag7 = personnelService.removeBatchByStaffUid(staffUidList);
+        boolean flag8 = checkStaffStatusService.removeBatchByStaffUid(staffUidList);
 //            System.out.println(flag1);
         System.out.println(flag2);
         System.out.println(flag3);
         System.out.println(flag4);
         System.out.println(flag5);
         System.out.println(flag6);
-        return flag1 && flag2 && flag3 && flag4 && flag5 && flag6;
+        return flag1 && flag2 && flag3 && flag4 && flag5 && flag6 && flag8;
 
     }
 
@@ -178,6 +181,7 @@ public class StaffServiceImpl implements StaffService {
         staffPact.setPactInfo(pactInfo);
         staffPact.setPactNote(pactNote);
         staffPact.setPactStaffPositionId(Integer.parseInt(staffPosition.trim()));
+
 //        System.out.println("aaaaa");
         boolean b1 = loginAndOutService.addUserLogin(userLogin);
 //        System.out.println("bbbbb");
@@ -188,13 +192,14 @@ public class StaffServiceImpl implements StaffService {
         boolean b4 = staffMapper.insertSelective(staff) != 1 ? false : true;
 //        System.out.println("eeeee");
         boolean b5 = positionService.editPositionNumByPositionId(Integer.parseInt(staffPosition.trim()));
+        boolean b6 = checkStaffStatusService.addCheckStaffStatusByStaffUid(staffUid);
 //        System.out.println("ffffff");
 //        System.out.println(b1);
 //        System.out.println(b2);
 //        System.out.println(b3);
 //        System.out.println(b4);
 //        System.out.println(b5);
-        return b1 && b2 && b3 && b4 && b5;
+        return b1 && b2 && b3 && b4 && b5 && b6;
     }
 
     @Override

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zaqacu.dao.CheckStaffStatusMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.zaqacu.entity.CheckStaffStatus">
+        <id column="check_staff_status_id" property="checkStaffStatusId" jdbcType="INTEGER"/>
+        <result column="check_staff_status_uid" property="checkStaffStatusUid" jdbcType="VARCHAR"/>
+        <result column="check_staff_status_name" property="checkStaffStatusName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+    check_staff_status_id, check_staff_status_uid, check_staff_status_name
+  </sql>
+
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from check_staff_status
+        where check_staff_status_id = #{checkStaffStatusId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAllCheckStaffStatusBatch" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from check_staff_status where check_staff_status_uid in
+        <foreach collection="staffUidList" item="staffUid" open="(" separator="," close=")">
+            #{staffUid}
+        </foreach>
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from check_staff_status
+    where check_staff_status_id = #{checkStaffStatusId,jdbcType=INTEGER}
+  </delete>
+
+    <delete id="deleteBatchByStaffUid">
+        delete from check_staff_status
+        where check_staff_status_uid in
+        <foreach collection="staffUidList" item="staffUid" open="(" separator="," close=")">
+            #{staffUid}
+        </foreach>
+    </delete>
+
+
+    <insert id="insert" parameterType="com.zaqacu.entity.CheckStaffStatus">
+    insert into check_staff_status (check_staff_status_id, check_staff_status_uid,
+      check_staff_status_name)
+    values (#{checkStaffStatusId,jdbcType=INTEGER}, #{checkStaffStatusUid,jdbcType=VARCHAR}, 
+      #{checkStaffStatusName,jdbcType=VARCHAR})
+  </insert>
+
+
+    <insert id="insertSelective" parameterType="com.zaqacu.entity.CheckStaffStatus">
+        insert into check_staff_status
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="checkStaffStatusId != null">
+                check_staff_status_id,
+            </if>
+            <if test="checkStaffStatusUid != null">
+                check_staff_status_uid,
+            </if>
+            <if test="checkStaffStatusName != null">
+                check_staff_status_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="checkStaffStatusId != null">
+                #{checkStaffStatusId,jdbcType=INTEGER},
+            </if>
+            <if test="checkStaffStatusUid != null">
+                #{checkStaffStatusUid,jdbcType=VARCHAR},
+            </if>
+            <if test="checkStaffStatusName != null">
+                #{checkStaffStatusName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.zaqacu.entity.CheckStaffStatus">
+        update check_staff_status
+        <set>
+            <if test="checkStaffStatusUid != null">
+                check_staff_status_uid = #{checkStaffStatusUid,jdbcType=VARCHAR},
+            </if>
+            <if test="checkStaffStatusName != null">
+                check_staff_status_name = #{checkStaffStatusName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where check_staff_status_id = #{checkStaffStatusId,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="com.zaqacu.entity.CheckStaffStatus">
+    update check_staff_status
+    set check_staff_status_uid = #{checkStaffStatusUid,jdbcType=VARCHAR},
+      check_staff_status_name = #{checkStaffStatusName,jdbcType=VARCHAR}
+    where check_staff_status_id = #{checkStaffStatusId,jdbcType=INTEGER}
+  </update>
+
+
+</mapper>

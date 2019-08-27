@@ -50,5 +50,10 @@ public class CheckTypeServiceImpl implements CheckTypeService {
         return checkTypeMapper.deleteByCheckTypes(typeIds) != 0 ? true : false;
     }
 
+    @Override
+    public List<CheckType> getAllCheckTypeList() {
+        return checkTypeMapper.selectAllCheckType();
+    }
+
 
 }
