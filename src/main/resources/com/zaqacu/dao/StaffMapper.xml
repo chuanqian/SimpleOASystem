@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zaqacu.dao.StaffMapper">
+
+    <resultMap id="BaseResultMap" type="com.zaqacu.entity.Staff">
+        <id column="staff_uid" property="staffUid"/>
+        <result column="staff_name" property="staffName"/>
+        <result column="staff_sex" property="staffSex"/>
+        <result column="staff_birth" property="staffBirth" jdbcType="TIMESTAMP"/>
+        <result column="staff_phone" property="staffPhone"/>
+        <result column="staff_email" property="staffEmail"/>
+        <result column="staff_xueli" property="staffXueli"/>
+        <result column="staff_department_id" property="staffDepartmentId" jdbcType="INTEGER"/>
+        <result column="staff_position" property="staffPosition" jdbcType="INTEGER"/>
+        <result column="staff_in_time" property="staffInTime" jdbcType="TIMESTAMP"/>
+        <result column="staff_status_id" property="staffStatusId" jdbcType="INTEGER"/>
+        <result column="staff_note" property="staffNote"/>
+        <result column="staff_training_id" property="staffTrainingId" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+    staff_uid, staff_name, staff_sex, staff_birth, staff_phone, staff_email, staff_xueli, 
+    staff_department_id, staff_position, staff_in_time, staff_status_id, staff_note, 
+    staff_training_id
+  </sql>
+
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from staff
+        where staff_uid = #{staffUid}
+    </select>
+
+    <!-- 分页查询员工信息 -->
+    <select id="selectAllStaffBySql" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from staff limit #{start},#{rows}
+    </select>
+    <!-- 查询员工总数 -->
+    <select id="selectCountStaff" resultType="Integer">
+        select count(staff_uid) from staff
+    </select>
+
+    <select id="selectAllStaffByPersonnel" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from staff order by staff_in_time desc
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from staff
+    where staff_uid = #{staffUid}
+  </delete>
+    <!-- 批量删除 -->
+    <delete id="deleteBatch">
+        delete from staff where staff_uid in
+        <foreach collection="staffUidList" item="staffUid" open="(" separator="," close=")">
+            #{staffUid}
+        </foreach>
+    </delete>
+
+
+    <insert id="insert" parameterType="com.zaqacu.entity.Staff">
+    insert into staff (staff_uid, staff_name, staff_sex,
+      staff_birth, staff_phone, staff_email, 
+      staff_xueli, staff_department_id, staff_position, 
+      staff_in_time, staff_status_id, staff_note, 
+      staff_training_id)
+    values (#{staffUid}, #{staffName}, #{staffSex},
+      #{staffBirth,jdbcType=TIMESTAMP}, #{staffPhone}, #{staffEmail},
+      #{staffXueli}, #{staffDepartmentId,jdbcType=INTEGER}, #{staffPosition,jdbcType=INTEGER},
+      #{staffInTime,jdbcType=TIMESTAMP}, #{staffStatusId,jdbcType=INTEGER}, #{staffNote},
+      #{staffTrainingId,jdbcType=INTEGER})
+  </insert>
+
+
+    <insert id="insertSelective" parameterType="com.zaqacu.entity.Staff">
+        insert into staff
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="staffUid != null">
+                staff_uid,
+            </if>
+            <if test="staffName != null">
+                staff_name,
+            </if>
+            <if test="staffSex != null">
+                staff_sex,
+            </if>
+            <if test="staffBirth != null">
+                staff_birth,
+            </if>
+            <if test="staffPhone != null">
+                staff_phone,
+            </if>
+            <if test="staffEmail != null">
+                staff_email,
+            </if>
+            <if test="staffXueli != null">
+                staff_xueli,
+            </if>
+            <if test="staffDepartmentId != null">
+                staff_department_id,
+            </if>
+            <if test="staffPosition != null">
+                staff_position,
+            </if>
+            <if test="staffInTime != null">
+                staff_in_time,
+            </if>
+            <if test="staffStatusId != null">
+                staff_status_id,
+            </if>
+            <if test="staffNote != null">
+                staff_note,
+            </if>
+            <if test="staffTrainingId != null">
+                staff_training_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="staffUid != null">
+                #{staffUid},
+            </if>
+            <if test="staffName != null">
+                #{staffName},
+            </if>
+            <if test="staffSex != null">
+                #{staffSex},
+            </if>
+            <if test="staffBirth != null">
+                #{staffBirth,jdbcType=TIMESTAMP},
+            </if>
+            <if test="staffPhone != null">
+                #{staffPhone},
+            </if>
+            <if test="staffEmail != null">
+                #{staffEmail},
+            </if>
+            <if test="staffXueli != null">
+                #{staffXueli},
+            </if>
+            <if test="staffDepartmentId != null">
+                #{staffDepartmentId,jdbcType=INTEGER},
+            </if>
+            <if test="staffPosition != null">
+                #{staffPosition,jdbcType=INTEGER},
+            </if>
+            <if test="staffInTime != null">
+                #{staffInTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="staffStatusId != null">
+                #{staffStatusId,jdbcType=INTEGER},
+            </if>
+            <if test="staffNote != null">
+                #{staffNote},
+            </if>
+            <if test="staffTrainingId != null">
+                #{staffTrainingId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.zaqacu.entity.Staff">
+        update staff
+        <set>
+            <if test="staffName != null">
+                staff_name = #{staffName},
+            </if>
+            <if test="staffSex != null">
+                staff_sex = #{staffSex},
+            </if>
+            <if test="staffBirth != null">
+                staff_birth = #{staffBirth,jdbcType=TIMESTAMP},
+            </if>
+            <if test="staffPhone != null">
+                staff_phone = #{staffPhone},
+            </if>
+            <if test="staffEmail != null">
+                staff_email = #{staffEmail},
+            </if>
+            <if test="staffXueli != null">
+                staff_xueli = #{staffXueli},
+            </if>
+            <if test="staffDepartmentId != null">
+                staff_department_id = #{staffDepartmentId,jdbcType=INTEGER},
+            </if>
+            <if test="staffPosition != null">
+                staff_position = #{staffPosition,jdbcType=INTEGER},
+            </if>
+            <if test="staffInTime != null">
+                staff_in_time = #{staffInTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="staffStatusId != null">
+                staff_status_id = #{staffStatusId,jdbcType=INTEGER},
+            </if>
+            <if test="staffNote != null">
+                staff_note = #{staffNote},
+            </if>
+            <if test="staffTrainingId != null">
+                staff_training_id = #{staffTrainingId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where staff_uid = #{staffUid}
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="com.zaqacu.entity.Staff">
+    update staff
+    set staff_name = #{staffName},
+      staff_sex = #{staffSex},
+      staff_birth = #{staffBirth,jdbcType=TIMESTAMP},
+      staff_phone = #{staffPhone},
+      staff_email = #{staffEmail},
+      staff_xueli = #{staffXueli},
+      staff_department_id = #{staffDepartmentId,jdbcType=INTEGER},
+      staff_position = #{staffPosition,jdbcType=INTEGER},
+      staff_in_time = #{staffInTime,jdbcType=TIMESTAMP},
+      staff_status_id = #{staffStatusId,jdbcType=INTEGER},
+      staff_note = #{staffNote},
+      staff_training_id = #{staffTrainingId,jdbcType=INTEGER}
+    where staff_uid = #{staffUid}
+  </update>
+</mapper>

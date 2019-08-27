@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zaqacu.dao.PersonnelMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.zaqacu.entity.Personnel">
+        <id column="personnel_id" property="personnelId" jdbcType="INTEGER"/>
+        <result column="personnel_staff_uid" property="personnelStaffUid"/>
+        <result column="personnel_old_position_id" property="personnelOldPositionId" jdbcType="INTEGER"/>
+        <result column="personnel_new_position_id" property="personnelNewPositionId" jdbcType="INTEGER"/>
+        <result column="personnel_time" property="personnelTime" jdbcType="TIMESTAMP"/>
+        <result column="personnel_cause" property="personnelCause"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+    personnel_id, personnel_staff_uid, personnel_old_position_id, personnel_new_position_id, 
+    personnel_time, personnel_cause
+  </sql>
+
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from personnel
+        where personnel_id = #{personnelId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectPersonnelBySql" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from personnel limit #{start},#{rows}
+    </select>
+
+    <select id="getAllCouunt" resultType="Integer">
+        select count(personnel_id) from personnel
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from personnel
+    where personnel_id = #{personnelId,jdbcType=INTEGER}
+  </delete>
+
+    <delete id="deleteBatch">
+        delete from personnel where personnel_id in
+        <foreach collection="personnelIds" item="personnelid" open="(" separator="," close=")">
+            #{personnelid}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBatchByStaffUid">
+        delete from personnel where personnel_staff_uid in
+        <foreach collection="staffUidList" item="staffUid" open="(" separator="," close=")">
+            #{staffUid}
+        </foreach>
+    </delete>
+
+
+    <insert id="insert" parameterType="com.zaqacu.entity.Personnel">
+    insert into personnel (personnel_id, personnel_staff_uid, personnel_old_position_id,
+      personnel_new_position_id, personnel_time, 
+      personnel_cause)
+    values (#{personnelId,jdbcType=INTEGER}, #{personnelStaffUid}, #{personnelOldPositionId,jdbcType=INTEGER},
+      #{personnelNewPositionId,jdbcType=INTEGER}, #{personnelTime,jdbcType=TIMESTAMP}, 
+      #{personnelCause})
+  </insert>
+
+
+    <insert id="insertSelective" parameterType="com.zaqacu.entity.Personnel">
+        insert into personnel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="personnelId != null">
+                personnel_id,
+            </if>
+            <if test="personnelStaffUid != null">
+                personnel_staff_uid,
+            </if>
+            <if test="personnelOldPositionId != null">
+                personnel_old_position_id,
+            </if>
+            <if test="personnelNewPositionId != null">
+                personnel_new_position_id,
+            </if>
+            <if test="personnelTime != null">
+                personnel_time,
+            </if>
+            <if test="personnelCause != null">
+                personnel_cause,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="personnelId != null">
+                #{personnelId,jdbcType=INTEGER},
+            </if>
+            <if test="personnelStaffUid != null">
+                #{personnelStaffUid},
+            </if>
+            <if test="personnelOldPositionId != null">
+                #{personnelOldPositionId,jdbcType=INTEGER},
+            </if>
+            <if test="personnelNewPositionId != null">
+                #{personnelNewPositionId,jdbcType=INTEGER},
+            </if>
+            <if test="personnelTime != null">
+                #{personnelTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="personnelCause != null">
+                #{personnelCause},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.zaqacu.entity.Personnel">
+        update personnel
+        <set>
+            <if test="personnelStaffUid != null">
+                personnel_staff_uid = #{personnelStaffUid},
+            </if>
+            <if test="personnelOldPositionId != null">
+                personnel_old_position_id = #{personnelOldPositionId,jdbcType=INTEGER},
+            </if>
+            <if test="personnelNewPositionId != null">
+                personnel_new_position_id = #{personnelNewPositionId,jdbcType=INTEGER},
+            </if>
+            <if test="personnelTime != null">
+                personnel_time = #{personnelTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="personnelCause != null">
+                personnel_cause = #{personnelCause},
+            </if>
+        </set>
+        where personnel_id = #{personnelId,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="com.zaqacu.entity.Personnel">
+    update personnel
+    set personnel_staff_uid = #{personnelStaffUid},
+      personnel_old_position_id = #{personnelOldPositionId,jdbcType=INTEGER},
+      personnel_new_position_id = #{personnelNewPositionId,jdbcType=INTEGER},
+      personnel_time = #{personnelTime,jdbcType=TIMESTAMP},
+      personnel_cause = #{personnelCause}
+    where personnel_id = #{personnelId,jdbcType=INTEGER}
+  </update>
+
+
+</mapper>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zaqacu.dao.StaffPactMapper">
+
+    <resultMap id="BaseResultMap" type="com.zaqacu.entity.StaffPact">
+        <id column="pact_id" property="pactId" jdbcType="INTEGER"/>
+        <result column="pact_staff_uid" property="pactStaffUid"/>
+        <result column="pact_create_time" property="pactCreateTime" jdbcType="TIMESTAMP"/>
+        <result column="pact_end_time" property="pactEndTime" jdbcType="TIMESTAMP"/>
+        <result column="pact_staff_position_id" property="pactStaffPositionId" jdbcType="INTEGER"/>
+        <result column="pact_note" property="pactNote"/>
+    </resultMap>
+
+    <resultMap id="ResultMapWithBLOBs" type="com.zaqacu.entity.StaffPact" extends="BaseResultMap">
+        <result column="pact_info" property="pactInfo" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    pact_id, pact_staff_uid, pact_create_time, pact_end_time, pact_staff_position_id,
+    pact_note
+  </sql>
+
+    <sql id="Blob_Column_List">
+    pact_info
+  </sql>
+
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from staff_pact
+        where pact_id = #{pactId,jdbcType=INTEGER}
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="selectAllPactBySql" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from staff_pact limit #{start},#{rows}
+    </select>
+
+    <!-- 查询总条数 -->
+    <select id="selectAllCount" resultType="Integer">
+      select count(pact_id) from staff_pact
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from staff_pact
+        where pact_id = #{pactId,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from staff_pact where pact_staff_uid in
+        <foreach collection="staffUidList" item="staffUid" open="(" separator="," close=")">
+            #{staffUid}
+        </foreach>
+    </delete>
+
+    <!-- 根据员工编号删除合同信息 -->
+    <delete id="deleteByStaffUid">
+        delete from staff_pact
+        where pact_staff_uid = #{staffUid}
+    </delete>
+
+    <insert id="insert" parameterType="com.zaqacu.entity.StaffPact">
+       insert into staff_pact (pact_id, pact_staff_uid, pact_create_time,
+          pact_end_time, pact_staff_position_id, pact_note,
+          pact_info)
+        values (#{pactId,jdbcType=INTEGER}, #{pactStaffUid}, #{pactCreateTime,jdbcType=TIMESTAMP},
+          #{pactEndTime,jdbcType=TIMESTAMP}, #{pactStaffPositionId,jdbcType=INTEGER}, #{pactNote},
+          #{pactInfo,jdbcType=LONGVARCHAR})
+      </insert>
+
+    <insert id="insertSelective" parameterType="com.zaqacu.entity.StaffPact">
+        insert into staff_pact
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pactId != null">
+                pact_id,
+            </if>
+            <if test="pactStaffUid != null">
+                pact_staff_uid,
+            </if>
+            <if test="pactCreateTime != null">
+                pact_create_time,
+            </if>
+            <if test="pactEndTime != null">
+                pact_end_time,
+            </if>
+            <if test="pactStaffPositionId != null">
+                pact_staff_position_id,
+            </if>
+            <if test="pactNote != null">
+                pact_note,
+            </if>
+            <if test="pactInfo != null">
+                pact_info,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pactId != null">
+                #{pactId,jdbcType=INTEGER},
+            </if>
+            <if test="pactStaffUid != null">
+                #{pactStaffUid},
+            </if>
+            <if test="pactCreateTime != null">
+                #{pactCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pactEndTime != null">
+                #{pactEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pactStaffPositionId != null">
+                #{pactStaffPositionId,jdbcType=INTEGER},
+            </if>
+            <if test="pactNote != null">
+                #{pactNote},
+            </if>
+            <if test="pactInfo != null">
+                #{pactInfo,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.zaqacu.entity.StaffPact">
+        update staff_pact
+        <set>
+            <if test="pactStaffUid != null">
+                pact_staff_uid = #{pactStaffUid},
+            </if>
+            <if test="pactCreateTime != null">
+                pact_create_time = #{pactCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pactEndTime != null">
+                pact_end_time = #{pactEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="pactStaffPositionId != null">
+                pact_staff_position_id = #{pactStaffPositionId,jdbcType=INTEGER},
+            </if>
+            <if test="pactNote != null">
+                pact_note = #{pactNote},
+            </if>
+            <if test="pactInfo != null">
+                pact_info = #{pactInfo,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where pact_id = #{pactId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zaqacu.entity.StaffPact">
+    update staff_pact
+    set pact_staff_uid = #{pactStaffUid},
+      pact_create_time = #{pactCreateTime,jdbcType=TIMESTAMP},
+      pact_end_time = #{pactEndTime,jdbcType=TIMESTAMP},
+      pact_staff_position_id = #{pactStaffPositionId,jdbcType=INTEGER},
+      pact_note = #{pactNote},
+      pact_info = #{pactInfo,jdbcType=LONGVARCHAR}
+    where pact_id = #{pactId,jdbcType=INTEGER}
+  </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.zaqacu.entity.StaffPact">
+    update staff_pact
+    set pact_staff_uid = #{pactStaffUid},
+      pact_create_time = #{pactCreateTime,jdbcType=TIMESTAMP},
+      pact_end_time = #{pactEndTime,jdbcType=TIMESTAMP},
+      pact_staff_position_id = #{pactStaffPositionId,jdbcType=INTEGER},
+      pact_note = #{pactNote}
+    where pact_id = #{pactId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

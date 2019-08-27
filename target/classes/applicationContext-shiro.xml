@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--    密码匹配器-->
+    <bean id="passwordMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="md5"/>
+        <property name="hashIterations" value="1024"/>
+    </bean>
+    <!--    配置进行授权和认证的Realm，要新增一个java类来实现-->
+    <bean id="myRealm" class="com.zaqacu.shiro.MyRealm">
+        <!--        注入密码匹配器-->
+        <property name="credentialsMatcher" ref="passwordMatcher"/>
+    </bean>
+    <!--    配置Shiro的Security Manager Bean。-->
+    <bean id="secuityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+    </bean>
+    <!--    配置Bean后置处理器：会自动的调用和Spring整和后各个组件的声明周期方法-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <!--    配置shiroFilter bean : 该bean的id必须和web.xml文件中配置的shiro filter 的name一致-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!--        装配secuityManager-->
+        <property name="securityManager" ref="secuityManager"/>
+        <!--        配置登陆页面-->
+        <property name="loginUrl" value="/toLogin.do"/>
+        <!--        用户访问韦对其授权的资源是，所显示的连接-->
+        <property name="unauthorizedUrl" value="/error.do"/>
+        <!--        具体配置需要要拦截那些URL，以及访问对应的URL时使用Shiro的什么Filter进行拦截-->
+        <property name="filterChainDefinitions">
+            <value></value>
+        </property>
+    </bean>
+</beans>

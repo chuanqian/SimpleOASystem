@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zaqacu.dao.StaffArchivesMapper">
+    <resultMap id="BaseResultMap" type="com.zaqacu.entity.StaffArchives">
+        <id column="archives_id" property="archivesId" jdbcType="INTEGER"/>
+        <result column="arcives_staff_uid" property="arcivesStaffUid"/>
+        <result column="archives_name" property="archivesName"/>
+        <result column="archives_note" property="archivesNote"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.zaqacu.entity.StaffArchives" extends="BaseResultMap">
+        <result column="archives_info" property="archivesInfo" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    archives_id, arcives_staff_uid, archives_name, archives_note
+  </sql>
+    <sql id="Blob_Column_List">
+    archives_info
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from staff_archives
+        where archives_id = #{archivesId,jdbcType=INTEGER}
+    </select>
+    <!-- 分页查询 -->
+    <select id="selectAllArchivesBySql" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from staff_archives limit #{start},#{rows}
+    </select>
+
+    <!-- 查询总条数 -->
+    <select id="selectArchivesCount" resultType="Integer">
+        select count(archives_id) from staff_archives
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from staff_archives
+    where archives_id = #{archivesId,jdbcType=INTEGER}
+  </delete>
+    <!-- 根据员工编号删除员工档案 -->
+    <delete id="deleteByStaffUid">
+        delete from staff_archives
+        where arcives_staff_uid=#{staffUid}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from staff_archives where arcives_staff_uid in
+        <foreach collection="staffUidList" item="staffUid" open="(" separator="," close=")">
+            #{staffUid}
+        </foreach>
+    </delete>
+
+    <insert id="insert" parameterType="com.zaqacu.entity.StaffArchives">
+    insert into staff_archives (archives_id, arcives_staff_uid, archives_name,
+      archives_note, archives_info)
+    values (#{archivesId,jdbcType=INTEGER}, #{arcivesStaffUid}, #{archivesName},
+      #{archivesNote}, #{archivesInfo,jdbcType=LONGVARCHAR})
+  </insert>
+
+    <insert id="insertSelective" parameterType="com.zaqacu.entity.StaffArchives">
+        insert into staff_archives
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="archivesId != null">
+                archives_id,
+            </if>
+            <if test="arcivesStaffUid != null">
+                arcives_staff_uid,
+            </if>
+            <if test="archivesName != null">
+                archives_name,
+            </if>
+            <if test="archivesNote != null">
+                archives_note,
+            </if>
+            <if test="archivesInfo != null">
+                archives_info,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="archivesId != null">
+                #{archivesId,jdbcType=INTEGER},
+            </if>
+            <if test="arcivesStaffUid != null">
+                #{arcivesStaffUid},
+            </if>
+            <if test="archivesName != null">
+                #{archivesName},
+            </if>
+            <if test="archivesNote != null">
+                #{archivesNote},
+            </if>
+            <if test="archivesInfo != null">
+                #{archivesInfo,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.zaqacu.entity.StaffArchives">
+        update staff_archives
+        <set>
+            <if test="arcivesStaffUid != null">
+                arcives_staff_uid = #{arcivesStaffUid},
+            </if>
+            <if test="archivesName != null">
+                archives_name = #{archivesName},
+            </if>
+            <if test="archivesNote != null">
+                archives_note = #{archivesNote},
+            </if>
+            <if test="archivesInfo != null">
+                archives_info = #{archivesInfo,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where archives_id = #{archivesId,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.zaqacu.entity.StaffArchives">
+    update staff_archives
+    set arcives_staff_uid = #{arcivesStaffUid},
+      archives_name = #{archivesName},
+      archives_note = #{archivesNote},
+      archives_info = #{archivesInfo,jdbcType=LONGVARCHAR}
+    where archives_id = #{archivesId,jdbcType=INTEGER}
+  </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.zaqacu.entity.StaffArchives">
+    update staff_archives
+    set arcives_staff_uid = #{arcivesStaffUid},
+      archives_name = #{archivesName},
+      archives_note = #{archivesNote}
+    where archives_id = #{archivesId,jdbcType=INTEGER}
+  </update>
+
+</mapper>
