@@ -26,4 +26,24 @@ public class CheckStaffStatusServiceImpl implements CheckStaffStatusService {
         return checkStaffStatusMapper.deleteBatchByStaffUid(staffUidList) != 0 ? true : false;
     }
 
+    @Override
+    public boolean editByStaffUidAndStatusName(String staffUid, String checkStaffStatusName) {
+
+        CheckStaffStatus checkStaffStatus = new CheckStaffStatus();
+        checkStaffStatus.setCheckStaffStatusUid(staffUid);
+        checkStaffStatus.setCheckStaffStatusName(checkStaffStatusName);
+        return checkStaffStatusMapper.updateByStaffUidAndStatusName(checkStaffStatus) != 0 ? true : false;
+
+    }
+
+    @Override
+    public String getByStaffUid(String staffUid) {
+        return checkStaffStatusMapper.selectByStaffUid(staffUid);
+    }
+
+    @Override
+    public int editStatusNameByTimes(String checkStaffStatusName) {
+        return checkStaffStatusMapper.updateStatusNameByTimes(checkStaffStatusName);
+    }
+
 }

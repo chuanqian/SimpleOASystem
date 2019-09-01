@@ -18,17 +18,43 @@
     </bean>
     <!--    配置Bean后置处理器：会自动的调用和Spring整和后各个组件的声明周期方法-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+    <bean id="orfilter" class="com.zaqacu.shiro.OrFilter"/>
     <!--    配置shiroFilter bean : 该bean的id必须和web.xml文件中配置的shiro filter 的name一致-->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <!--        装配secuityManager-->
         <property name="securityManager" ref="secuityManager"/>
         <!--        配置登陆页面-->
-        <property name="loginUrl" value="/toLogin.do"/>
+        <property name="loginUrl" value="/toLogin.login"/>
         <!--        用户访问韦对其授权的资源是，所显示的连接-->
-        <property name="unauthorizedUrl" value="/error.do"/>
+        <property name="unauthorizedUrl" value="/toError.login"/>
         <!--        具体配置需要要拦截那些URL，以及访问对应的URL时使用Shiro的什么Filter进行拦截-->
         <property name="filterChainDefinitions">
-            <value></value>
+            <value>
+                <!-- 基于角色的权限配置 -->
+                /*.check=orFilter[manager,check]
+                /*.staff=orFilter[manager,staff]
+                /*.position=orFilter[manager,position]
+                /*.department=orFilter[manager,department]
+                /*.pay=orFilter[manager,pay]
+                /*.mertis=orFilter[manager,pay]
+                /*.basic=orFilter[manager,pay]
+                /*.personnel=orFilter[manager,personnel]
+                /*.role=orFilter[manager]
+                <!--authc表示访问该链接，必须要进行登录认证  -->
+<!--                /*.check=authc
+                /*.staff=authc
+                /*.position=authc
+                /*.department=authc
+                /*.pay=authc
+                /*.personnel=authc
+                /*.role=authc-->
+            </value>
         </property>
+        <property name="filters">
+            <map>
+                <entry key="orFilter" value-ref="orfilter"/>
+            </map>
+        </property>
+
     </bean>
 </beans>

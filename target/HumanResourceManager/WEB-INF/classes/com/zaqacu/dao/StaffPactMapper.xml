@@ -38,7 +38,22 @@
         select
         <include refid="Base_Column_List"/>,
         <include refid="Blob_Column_List"/>
-        from staff_pact limit #{start},#{rows}
+        from staff_pact
+        <where>
+            <if test="startTime != null">
+                pact_create_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and pact_create_time &lt;= #{endTime}
+            </if>
+            <if test="pactStaffPositionId != null">
+                and pact_staff_position_id=#{pactStaffPositionId}
+            </if>
+            <if test="staffName != null and staffName != ''">
+                and pact_staff_uid in (select staff_uid from staff where staff_name like #{staffName})
+            </if>
+        </where>
+        limit #{start},#{rows}
     </select>
 
     <!-- 查询总条数 -->

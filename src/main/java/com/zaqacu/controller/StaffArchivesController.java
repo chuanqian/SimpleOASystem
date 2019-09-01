@@ -24,6 +24,9 @@ public class StaffArchivesController {
     @RequestMapping("getAllArchivesBySql.staff")
     @ResponseBody
     public HashMap<String,Object> getAllArchivesBySql(StaffArchives staffArchives){
+        if (staffArchives.getArchivesName() != null && staffArchives.getArchivesName() != ""){
+            staffArchives.setArchivesName("%"+staffArchives.getArchivesName()+"%");
+        }
         return staffArchivesService.getAllStaffArchivesBySql(staffArchives);
     }
 

@@ -17,9 +17,15 @@ public interface CheckStaffStatusMapper {
 
     CheckStaffStatus selectByPrimaryKey(Integer checkStaffStatusId);
 
+    String selectByStaffUid(String checkStaffStatusUid);
+
     List<CheckStaffStatus> selectAllCheckStaffStatusBatch(@Param("staffUidList") List<String> staffUidList);
 
     int updateByPrimaryKeySelective(CheckStaffStatus record);
 
     int updateByPrimaryKey(CheckStaffStatus record);
+
+    int updateByStaffUidAndStatusName(CheckStaffStatus checkStaffStatus);
+
+    int updateStatusNameByTimes(String checkStaffStatusName);
 }

@@ -30,7 +30,13 @@
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
-        from staff_archives limit #{start},#{rows}
+        from staff_archives
+        <where>
+            <if test="archivesName != null and archivesName != ''">
+                archives_name like #{archivesName}
+            </if>
+        </where>
+        limit #{start},#{rows}
     </select>
 
     <!-- 查询总条数 -->

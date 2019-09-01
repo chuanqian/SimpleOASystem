@@ -1,126 +1,154 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zaqacu.dao.UserLoginMapper" >
+<mapper namespace="com.zaqacu.dao.UserLoginMapper">
 
 
-  <resultMap id="BaseResultMap" type="com.zaqacu.entity.UserLogin" >
-    <id column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="limit_name" property="limitName" />
-    <result column="user_name" property="userName" />
-    <result column="user_password" property="userPassword" />
-    <result column="staff_uid" property="staffUid" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.zaqacu.entity.UserLogin">
+        <id column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="user_permissions_id" property="userPermissionsId" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="user_password" property="userPassword" jdbcType="VARCHAR"/>
+        <result column="staff_uid" property="staffUid" jdbcType="VARCHAR"/>
+    </resultMap>
 
 
-  <sql id="Base_Column_List" >
-    user_id, limit_name, user_name, user_password, staff_uid
+    <sql id="Base_Column_List">
+    user_id, user_permissions_id, user_name, user_password, staff_uid
   </sql>
 
+    <!-- 通过账户名查询用户是否唯一 -->
+    <select id="selectByUserName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from userlogin
+        where user_name=#{userName}
+    </select>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from userlogin
-    where user_id = #{userId,jdbcType=INTEGER}
-  </select>
+    <!-- 批量删除 -->
+    <delete id="deleteBatch">
+        delete from userlogin
+        where staff_uid in
+        <foreach collection="staffUidList" item="staffUid" open="(" separator="," close=")">
+            #{staffUid}
+        </foreach>
+    </delete>
+
+    <!-- 分页查询账户信息 -->
+    <select id="selectAllUserLoginBySql" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from userlogin
+        <where>
+            <if test="userName != null and userName != ''">
+                user_name like #{userName}
+            </if>
+            <if test="userPermissionsId != null">
+                user_permissions_id=#{userPermissionsId}
+            </if>
+        </where>
+        limit #{start},#{page}
+    </select>
+
+    <select id="selectByStaffUid" resultType="Integer">
+        select user_id from userlogin where staff_uid=#{staffUid}
+    </select>
+
+    <select id="selectAllCount" resultType="Integer">
+        select count(user_id) from userlogin staff_uid=#{staffUid}
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from userlogin
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectRoleNames" resultType="String">
+        select r.role_name from userlogin u,role r,permissions p
+        where u.user_id=p.permissions_userlogin_id and p.permissions_role_id=r.role_id and u.user_name=#{userName}
+    </select>
 
 
-  <!-- 通过账户名查询用户是否唯一 -->
-  <select id="selectByUserName" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from userlogin
-    where user_name=#{userName}
-  </select>
-
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from userlogin
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
 
-  <delete id="deleteBatch">
-    delete from userlogin
-    where staff_uid in
-    <foreach collection="staffUidList" item="staffUid" open="(" separator="," close=")">
-      #{staffUid}
-    </foreach>
-  </delete>
 
-
-  <insert id="insert" parameterType="com.zaqacu.entity.UserLogin" >
-    insert into userlogin (user_id, limit_name, user_name,
+    <insert id="insert" parameterType="com.zaqacu.entity.UserLogin">
+    insert into userlogin (user_id, user_permissions_id, user_name, 
       user_password, staff_uid)
-    values (#{userId,jdbcType=INTEGER}, #{limitName}, #{userName},
-      #{userPassword}, #{staffUid})
+    values (#{userId,jdbcType=INTEGER}, #{userPermissionsId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
+      #{userPassword,jdbcType=VARCHAR}, #{staffUid,jdbcType=VARCHAR})
   </insert>
 
 
+    <insert id="insertSelective" parameterType="com.zaqacu.entity.UserLogin">
+        insert into userlogin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userPermissionsId != null">
+                user_permissions_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="userPassword != null">
+                user_password,
+            </if>
+            <if test="staffUid != null">
+                staff_uid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="userPermissionsId != null">
+                #{userPermissionsId,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null">
+                #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="staffUid != null">
+                #{staffUid,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 
-  <insert id="insertSelective" parameterType="com.zaqacu.entity.UserLogin" >
-    insert into userlogin
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="limitName != null" >
-        limit_name,
-      </if>
-      <if test="userName != null" >
-        user_name,
-      </if>
-      <if test="userPassword != null" >
-        user_password,
-      </if>
-      <if test="staffUid != null" >
-        staff_uid,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="limitName != null" >
-        #{limitName},
-      </if>
-      <if test="userName != null" >
-        #{userName},
-      </if>
-      <if test="userPassword != null" >
-        #{userPassword},
-      </if>
-      <if test="staffUid != null" >
-        #{staffUid},
-      </if>
-    </trim>
-  </insert>
 
+    <update id="updateByPrimaryKeySelective" parameterType="com.zaqacu.entity.UserLogin">
+        update userlogin
+        <set>
+            <if test="userPermissionsId != null">
+                user_permissions_id = #{userPermissionsId,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPassword != null">
+                user_password = #{userPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="staffUid != null">
+                staff_uid = #{staffUid,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.zaqacu.entity.UserLogin" >
+    <update id="updateByPrimaryKey" parameterType="com.zaqacu.entity.UserLogin">
     update userlogin
-    <set >
-      <if test="limitName != null" >
-        limit_name = #{limitName},
-      </if>
-      <if test="userName != null" >
-        user_name = #{userName},
-      </if>
-      <if test="userPassword != null" >
-        user_password = #{userPassword},
-      </if>
-      <if test="staffUid != null" >
-        staff_uid = #{staffUid},
-      </if>
-    </set>
+    set user_permissions_id = #{userPermissionsId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_password = #{userPassword,jdbcType=VARCHAR},
+      staff_uid = #{staffUid,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 
-
-  <update id="updateByPrimaryKey" parameterType="com.zaqacu.entity.UserLogin" >
-    update userlogin
-    set limit_name = #{limitName},
-      user_name = #{userName},
-      user_password = #{userPassword},
-      staff_uid = #{staffUid}
-    where user_id = #{userId,jdbcType=INTEGER}
-  </update>
 </mapper>

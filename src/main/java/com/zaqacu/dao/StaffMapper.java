@@ -9,6 +9,11 @@ public interface StaffMapper {
 
     int deleteByPrimaryKey(String staffUid);
 
+    /**
+     * 批量删除员工
+     * @param staffUidList
+     * @return
+     */
     int deleteBatch(@Param("staffUidList") List<String> staffUidList);
 
     int insert(Staff record);
@@ -32,9 +37,20 @@ public interface StaffMapper {
      */
     int selectCountStaff();
 
+    List<String> selectAllPositionByPositionName(String positionName);
+
     int updateByPrimaryKeySelective(Staff record);
 
     int updateByPrimaryKey(Staff record);
 
-    List<Staff> selectAllStaffByPersonnel();
+    /**
+     * 人事调动分页查询全部员工
+     * @param staff
+     * @return
+     */
+    List<Staff> selectAllStaffByPersonnel(Staff staff);
+
+    List<Staff> selectAllStaffByStaffUidList(@Param("staffUidList") List<String> staffUidList);
+
+
 }

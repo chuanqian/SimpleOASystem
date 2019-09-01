@@ -36,7 +36,16 @@
     <select id="selectAllPositionBySql" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from position limit #{start},#{rows}
+        from position
+        <where>
+            <if test="positionDepartmentId!=null">
+                position_department_id=#{positionDepartmentId}
+            </if>
+            <if test="positionName != null and positionName !=''">
+                and position_name like #{positionName}
+            </if>
+        </where>
+        limit #{start},#{rows}
     </select>
 
     <select id="selectCountPosition" resultType="Integer">

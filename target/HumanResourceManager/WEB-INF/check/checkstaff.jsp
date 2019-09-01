@@ -24,8 +24,6 @@
     <script type="text/javascript"
             src="${pageContext.request.contextPath}/easyui/1.3.4/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/echarts.min.js"></script>
-
-
 </head>
 <body>
 <div class="easyui-layout" data-options="fit:true">
@@ -50,17 +48,18 @@
                 <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>--%>
             </div>
             <div class="wu-toolbar-search">
-                <label>起始时间：</label><input class="easyui-datebox" style="width:100px">
-                <label>结束时间：</label><input class="easyui-datebox" style="width:100px">
-                <label>用户组：</label>
-                <select class="easyui-combobox" panelHeight="auto" style="width:100px">
-                    <option value="0">选择用户组</option>
-                    <option value="1">黄钻</option>
-                    <option value="2">红钻</option>
-                    <option value="3">蓝钻</option>
+                <%--<label>起始时间：</label><input class="easyui-datebox" style="width:100px">
+                <label>结束时间：</label><input class="easyui-datebox" style="width:100px">--%>
+                <label>学历：</label>
+                <select id="xueli" class="easyui-combobox" panelHeight="auto" style="width:100px">
+                    <option value="小学">小学</option>
+                    <option value="中学">中学</option>
+                    <option value="本科">本科</option>
+                    <option value="研究生">研究生</option>
+                    <option value="博士">博士</option>
                 </select>
-                <label>关键词：</label><input class="wu-text" style="width:100px">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
+                <label>员工姓名：</label><input id="staffname" class="wu-text" style="width:100px">
+                <a href="javascript:opensearch()" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
             </div>
         </div>
         <!-- 工具栏结束 -->
@@ -84,8 +83,7 @@
             <tr>
                 <td align="right">考勤类型:</td>
                 <td>
-                    <select name="staffStatusId" class="wu-text easyui-combobox" panelHeight="auto" id="checktype"
-                            >
+                    <select name="checkTypeId" class="wu-text easyui-combobox" panelHeight="auto" id="checktype">
                     </select>
                 </td>
             </tr>
@@ -102,6 +100,14 @@
 <!-- 模态框结束-->
 <script type="text/javascript">
 
+    function opensearch() {
+        var xueli=$("#xueli").combobox("getValue");
+        var staffname=$("#staffname").val();
+        var url='checkStaffShow.check?staffXueli='+xueli+"&staffName="+staffname;
+        console.log(url);
+        openthe(url);
+    }
+
 
     /**
      * 添加记录
@@ -110,6 +116,7 @@
         $('#wu-form').form('submit', {
             url: 'add.do',
             success: function (data) {
+                var data = eval('(' + data + ')');
                 console.log(data)
                 if (data) {
                     $.messager.alert('信息提示', '提交成功！', 'info');
@@ -127,11 +134,16 @@
     function edit() {
 
         $('#wu-form').form('submit', {
-            url: 'update.do',
+            url: 'editCheckStaffStatusAndCheck.check',
             success: function (data) {
+                // alert(typeof (data))
+                var data = eval('(' + data + ')')
+                console.log(data);
+                console.log(typeof (data));
                 if (data) {
                     $.messager.alert('信息提示', '提交成功！', 'info');
                     $('#wu-dialog').dialog('close');
+                    $('#wu-datagrid').datagrid("load");
                 } else {
                     $.messager.alert('信息提示', '提交失败！', 'info');
                 }
@@ -146,13 +158,13 @@
         $.messager.confirm('信息提示', '确定要删除该记录？', function (result) {
             if (result) {
                 var items = $('#wu-datagrid').datagrid('getSelections');
-                console.log(items)
+                console.log(items);
                 var ids = "";
                 $(items).each(function () {
 
                     ids += this.sysId + ","
                 });
-                console.log(ids)
+                console.log(ids);
 
                 $.ajax({
                     url: 'del.do',
@@ -208,7 +220,7 @@
             url: "getAllCheckTypeList.check",//url*
             valueField: "checkTypeId", //相当于 option 中的 value 发送到后台的
             textField: "checkTypeName",//option中间的内容 显示给用户看的
-            onSelect:function (v) {
+            onSelect: function (v) {
                 console.log(v.checkTypeMoney);
                 $("#money").val(v.checkTypeMoney)
             }
@@ -250,25 +262,29 @@
      private String staffXueli;
      private String checkStaffStatusName;
      */
-    $('#wu-datagrid').datagrid({
-        url: 'checkStaffShow.check',
-        method: "get",//提交方式
-        rownumbers: true,//显示行号
-        singleSelect: false,
-        pagination: true, //如果表格需要支持分页，必须设置该选项为true
-        pageSize: 5, //表格中每页显示的行数
-        pageList: [5, 10],
-        fitColumns: true,
-        fit: true,
-        columns: [[
-            {checkbox: true},
-            {field: 'staffName', title: '员工姓名', width: 100},
+    openthe('checkStaffShow.check');
+    function openthe(url) {
+        $('#wu-datagrid').datagrid({
+            url: url,
+            method: "get",//提交方式
+            rownumbers: true,//显示行号
+            singleSelect: false,
+            pagination: true, //如果表格需要支持分页，必须设置该选项为true
+            pageSize: 5, //表格中每页显示的行数
+            pageList: [5, 10],
+            fitColumns: true,
+            fit: true,
+            columns: [[
+                {checkbox: true},
+                {field: 'staffName', title: '员工姓名', width: 100},
 
-            {field: 'staffSex', title: '员工性别', width: 100},
-            {field: 'staffPhone', title: '员工电话', width: 100},
-            {field: 'staffXueli', title: '员工学历', width: 100},
-            {field: 'checkStaffStatusName', title: '考勤状态', width: 100},
+                {field: 'staffSex', title: '员工性别', width: 100},
+                {field: 'staffPhone', title: '员工电话', width: 100},
+                {field: 'staffXueli', title: '员工学历', width: 100},
+                {field: 'checkStaffStatusName', title: '考勤状态', width: 100},
 
-        ]]
-    });
+            ]]
+        });
+    }
+
 </script>

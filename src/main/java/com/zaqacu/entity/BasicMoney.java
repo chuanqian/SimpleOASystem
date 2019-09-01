@@ -1,6 +1,6 @@
 package com.zaqacu.entity;
 
-public class BasicMoney {
+public class BasicMoney extends MyPage {
 
     private Integer basicMoneyId;
 

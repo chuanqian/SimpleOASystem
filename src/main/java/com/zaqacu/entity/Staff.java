@@ -32,10 +32,29 @@ public class Staff extends MyPage {
 
     private Integer staffTrainingId;
 
+    private Date startTime;
+    private Date endTime;
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = TimeUtls.getTimeNull(startTime);
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = TimeUtls.getTimeNull(endTime);
+    }
 
     public String getStaffUid() {
         return staffUid;
     }
+
 
     public void setStaffUid(String staffUid) {
         this.staffUid = staffUid == null ? null : staffUid.trim();

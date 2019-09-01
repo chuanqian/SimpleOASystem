@@ -37,17 +37,60 @@
     <select id="selectAllStaffBySql" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from staff limit #{start},#{rows}
+        from staff s
+        <where>
+            <if test="staffName != null and staffName != ''">
+                s.staff_name like #{staffName}
+            </if>
+            <if test="staffXueli != null and staffXueli != ''">
+                and s.staff_xueli = #{staffXueli}
+            </if>
+            <if test="startTime != null">
+                and staff_in_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and staff_in_time &lt;= #{endTime}
+            </if>
+            <if test="staffPosition != null">
+                and staff_position=#{staffPosition}
+            </if>
+        </where>
+        limit #{start},#{rows}
     </select>
     <!-- 查询员工总数 -->
     <select id="selectCountStaff" resultType="Integer">
         select count(staff_uid) from staff
     </select>
 
+
+    <!-- 根据人事分页查询你员工信息 -->
     <select id="selectAllStaffByPersonnel" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from staff order by staff_in_time desc
+        from staff
+        <where>
+            <if test="staffPosition != null">
+                staff_position=#{staffPosition}
+            </if>
+            <if test="staffName != null and staffName != ''">
+                and staff_name like #{staffName}
+            </if>
+        </where>
+        order by staff_in_time desc
+        limit #{start},#{rows}
+    </select>
+
+    <select id="selectAllPositionByPositionName" resultType="String">
+        select staff_email from staff s left join position p on s.staff_position=p.position_id where p.position_name=#{position}
+    </select>
+
+    <select id="selectAllStaffByStaffUidList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from staff where staff_uid in
+        <foreach collection="staffUidList" item="staffUid" open="(" separator="," close=")">
+            #{staffUid}
+        </foreach>
     </select>
 
 

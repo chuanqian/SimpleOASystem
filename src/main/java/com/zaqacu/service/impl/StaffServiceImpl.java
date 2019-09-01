@@ -44,6 +44,8 @@ public class StaffServiceImpl implements StaffService {
     private PersonnelService personnelService;
     @Autowired
     private CheckStaffStatusService checkStaffStatusService;
+    @Autowired
+    private PermissionsService permissionsService;
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -119,7 +121,7 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean addStaff(String limitName, String userName, String userPassword,
+    public boolean addStaff(String userName, String userPassword,
                             String staffName, String staffSex, String staffBirth, String staffPhone,
                             String staffEmail, String staffXueli, String staffPosition,
                             String staffInTime, String staffStatusId, String staffNote, String archivesName,
@@ -134,7 +136,7 @@ public class StaffServiceImpl implements StaffService {
         String saltPassword = SaltUtils.getSaltPassword(userPassword, userName);
         String staffUid = UUIDUtils.getOneUUId();
         UserLogin userLogin = new UserLogin();
-        userLogin.setLimitName(limitName);
+        userLogin.setUserPermissionsId(1);
         userLogin.setUserName(userName);
         userLogin.setUserPassword(saltPassword);
         userLogin.setStaffUid(staffUid);
@@ -209,8 +211,35 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public List<Staff> getAllStaffByPersonnel() {
-        return staffMapper.selectAllStaffByPersonnel();
+    public List<Staff> getAllStaffByPersonnel(Staff staff) {
+        return staffMapper.selectAllStaffByPersonnel(staff);
+    }
+
+    @Override
+    public List<String> getAllPositionByPositionName(String positionName) {
+        return staffMapper.selectAllPositionByPositionName(positionName);
+    }
+
+    @Override
+    public int getCountStaff() {
+        return staffMapper.selectCountStaff();
+    }
+
+    @Override
+    public List<Staff> getAllStaffByStaffUidList(List<String> staffUidList) {
+        return staffMapper.selectAllStaffByStaffUidList(staffUidList);
+    }
+
+    @Override
+    public boolean toGiveEnable(String staffUid, String StaffName, String roleIds) {
+        int userId = loginAndOutService.getByStaffUid(staffUid);
+        String[] roleids=roleIds.split(",");
+        List<Integer> roles=new ArrayList<>();
+        for (String roleid : roleids) {
+            roles.add(Integer.parseInt(roleid.trim()));
+        }
+        permissionsService.removeByIdandRoleId(userId);
+        return permissionsService.addPermissions(userId,roles);
     }
 
 

@@ -29,7 +29,7 @@ public class TimeUtls {
     public static Date getTimeParse(String time){
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         try {
-            if (time != null) {
+            if (time != null && time != "") {
                 return sdf.parse(time);
             }
         } catch (ParseException e) {
@@ -37,4 +37,17 @@ public class TimeUtls {
         }
         return new Date();
     }
+
+    public static Date getTimeNull(String time){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            if (time != null && time != "") {
+                return sdf.parse(time);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

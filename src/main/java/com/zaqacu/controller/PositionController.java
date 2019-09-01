@@ -34,6 +34,9 @@ public class PositionController {
     @RequestMapping(value = "getAllPositionBysql.position")
     @ResponseBody
     public HashMap<String, Object> getAllPositionBysql(Position position) {
+        if(position.getPositionName()!=null && position.getPositionName()!=""){
+            position.setPositionName("%"+position.getPositionName()+"%");
+        }
         return positionService.getAllPositionBySql(position);
     }
 

@@ -114,5 +114,14 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentList;
     }
 
+    /**
+     * 获取全部的部门信息，不组装
+     * @return
+     */
+    @Override
+    public List<Department> getAllDepartmentAA() {
+        return departmentMapper.selectAllDepartmentBB();
+    }
+
 
 }

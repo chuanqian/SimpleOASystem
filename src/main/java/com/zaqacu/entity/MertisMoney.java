@@ -1,6 +1,6 @@
 package com.zaqacu.entity;
 
-public class MertisMoney {
+public class MertisMoney extends MyPage{
 
     private Integer mertisMoneyId;
 

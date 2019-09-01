@@ -1,10 +1,9 @@
 package com.zaqacu.entity;
 
-public class UserLogin {
-
+public class UserLogin extends MyPage {
     private Integer userId;
 
-    private String limitName;
+    private Integer userPermissionsId;
 
     private String userName;
 
@@ -20,12 +19,12 @@ public class UserLogin {
         this.userId = userId;
     }
 
-    public String getLimitName() {
-        return limitName;
+    public Integer getUserPermissionsId() {
+        return userPermissionsId;
     }
 
-    public void setLimitName(String limitName) {
-        this.limitName = limitName == null ? null : limitName.trim();
+    public void setUserPermissionsId(Integer userPermissionsId) {
+        this.userPermissionsId = userPermissionsId;
     }
 
     public String getUserName() {
@@ -50,16 +49,5 @@ public class UserLogin {
 
     public void setStaffUid(String staffUid) {
         this.staffUid = staffUid == null ? null : staffUid.trim();
-    }
-
-    @Override
-    public String toString() {
-        return "UserLogin{" +
-                "userId=" + userId +
-                ", limitName='" + limitName + '\'' +
-                ", userName='" + userName + '\'' +
-                ", userPassword='" + userPassword + '\'' +
-                ", staffUid='" + staffUid + '\'' +
-                '}';
     }
 }

@@ -1,7 +1,7 @@
 package com.zaqacu.controller;
 
 import com.zaqacu.entity.Personnel;
-import com.zaqacu.entitydto.PersonnelDto;
+import com.zaqacu.entity.Staff;
 import com.zaqacu.service.PersonnelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Controller
 public class PersonnelContrller {
@@ -25,8 +24,15 @@ public class PersonnelContrller {
 
     @RequestMapping(value = "getAllStaffByPersonnel.personnel")
     @ResponseBody
-    public List<PersonnelDto> getAllStaffByPersonnel() {
-        return service.getAllStaffAndPosition();
+    public HashMap<String, Object> getAllStaffByPersonnel(Staff staff) {
+        System.out.println(staff.getRows());
+        System.out.println("dfdfsdfsdfdsf");
+        System.out.println(staff);
+        System.out.println("dfsdfsdfasdfasdfasd");
+        if(staff.getStaffName()!=null && staff.getStaffName()!="") {
+            staff.setStaffName("%" + staff.getStaffName() + "%");
+        }
+        return service.getAllStaffAndPosition(staff);
     }
 
     @RequestMapping(value = "editPersonnel.personnel",method = RequestMethod.POST)
@@ -49,6 +55,11 @@ public class PersonnelContrller {
     @RequestMapping(value = "getAllPersonnelBySql.personsition",method = RequestMethod.GET)
     @ResponseBody
     public HashMap<String,Object> getAllPersonnelBySql(Personnel personnel){
+        if(personnel.getStaffName()!=null){
+            personnel.setStaffName("%"+personnel.getStaffName()+"%");
+        }
+        System.out.println(personnel.getStartTime());
+        System.out.println(personnel.getEndTime());
         return service.getAllPersonnelBySql(personnel);
     }
 

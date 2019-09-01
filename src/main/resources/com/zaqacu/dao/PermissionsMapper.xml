@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zaqacu.dao.PermissionsMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.zaqacu.entity.Permissions">
+        <id column="permissions_id" property="permissionsId" jdbcType="INTEGER"/>
+        <result column="permissions_role_id" property="permissionsRoleId" jdbcType="INTEGER"/>
+        <result column="permissions_userlogin_id" property="permissionsUserloginId" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+    permissions_id, permissions_role_id, permissions_userlogin_id
+  </sql>
+
+    <select id="selectAllPermissionsList" resultMap="BaseResultMap">
+    select * from permissions
+  </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from permissions
+        where permissions_id = #{permissionsId,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertPermissions">
+        insert into permissions(permissions_userlogin_id,permissions_role_id)  values
+        <foreach collection="permissionsRoleIdList" item="permissionsRoleId"  separator="," >
+           (#{permissionsUserloginId},#{permissionsRoleId})
+        </foreach>
+    </insert>
+
+
+    <delete id="deleteByIdandRoleId">
+        delete from permissions where permissions_userlogin_id=#{permissionsUserloginId}
+    </delete>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from permissions
+    where permissions_id = #{permissionsId,jdbcType=INTEGER}
+  </delete>
+
+
+    <insert id="insert" parameterType="com.zaqacu.entity.Permissions">
+    insert into permissions (permissions_id, permissions_role_id, 
+      permissions_userlogin_id)
+    values (#{permissionsId,jdbcType=INTEGER}, #{permissionsRoleId,jdbcType=INTEGER}, 
+      #{permissionsUserloginId,jdbcType=INTEGER})
+  </insert>
+
+
+    <insert id="insertSelective" parameterType="com.zaqacu.entity.Permissions">
+        insert into permissions
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="permissionsId != null">
+                permissions_id,
+            </if>
+            <if test="permissionsRoleId != null">
+                permissions_role_id,
+            </if>
+            <if test="permissionsUserloginId != null">
+                permissions_userlogin_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="permissionsId != null">
+                #{permissionsId,jdbcType=INTEGER},
+            </if>
+            <if test="permissionsRoleId != null">
+                #{permissionsRoleId,jdbcType=INTEGER},
+            </if>
+            <if test="permissionsUserloginId != null">
+                #{permissionsUserloginId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.zaqacu.entity.Permissions">
+        update permissions
+        <set>
+            <if test="permissionsRoleId != null">
+                permissions_role_id = #{permissionsRoleId,jdbcType=INTEGER},
+            </if>
+            <if test="permissionsUserloginId != null">
+                permissions_userlogin_id = #{permissionsUserloginId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where permissions_id = #{permissionsId,jdbcType=INTEGER}
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="com.zaqacu.entity.Permissions">
+    update permissions
+    set permissions_role_id = #{permissionsRoleId,jdbcType=INTEGER},
+      permissions_userlogin_id = #{permissionsUserloginId,jdbcType=INTEGER}
+    where permissions_id = #{permissionsId,jdbcType=INTEGER}
+  </update>
+
+
+</mapper>

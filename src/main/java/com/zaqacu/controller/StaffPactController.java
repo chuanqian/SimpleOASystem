@@ -19,17 +19,21 @@ public class StaffPactController {
     private StaffPactService staffPactService;
 
     @RequestMapping("toPactStaff.staff")
-    public String toPactStaff(){
+    public String toPactStaff() {
         return "staff/pact";
     }
 
     @RequestMapping("getAllStaffPact.staff")
     @ResponseBody
     public HashMap<String, Object> getAllStaffPactBySql(StaffPact staffPact) {
+        if (staffPact.getStaffName() != null && staffPact.getStaffName() != "") {
+            staffPact.setStaffName("%" + staffPact.getStaffName() + "%");
+        }
         return staffPactService.getAllPactBySql(staffPact);
     }
+
     @RequestMapping("editStaffPact.staff")
-    public boolean editStaffPact(StaffPact staffPact){
+    public boolean editStaffPact(StaffPact staffPact) {
         return staffPactService.editStaffPactById(staffPact);
     }
 

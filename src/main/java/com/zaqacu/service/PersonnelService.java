@@ -1,13 +1,13 @@
 package com.zaqacu.service;
 
 import com.zaqacu.entity.Personnel;
-import com.zaqacu.entitydto.PersonnelDto;
+import com.zaqacu.entity.Staff;
 
 import java.util.HashMap;
 import java.util.List;
 
 public interface PersonnelService {
-    List<PersonnelDto> getAllStaffAndPosition();
+    HashMap<String,Object> getAllStaffAndPosition(Staff staff);
 
     boolean editPersonnelByPosition(String personnelStaffUid, String sName, String positionName, String personnelNewPositionId, String personnelCause);
 

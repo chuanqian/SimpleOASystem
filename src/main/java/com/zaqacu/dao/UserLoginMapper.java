@@ -1,16 +1,12 @@
 package com.zaqacu.dao;
 
 import com.zaqacu.entity.UserLogin;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-@Repository
 public interface UserLoginMapper {
-
     int deleteByPrimaryKey(Integer userId);
-
-    int deleteBatch(List<String> StaffUidList);
 
     int insert(UserLogin record);
 
@@ -18,6 +14,13 @@ public interface UserLoginMapper {
 
     UserLogin selectByPrimaryKey(Integer userId);
 
+    int selectByStaffUid(String staffUid);
+
+    int updateByPrimaryKeySelective(UserLogin record);
+
+    int updateByPrimaryKey(UserLogin record);
+
+    int deleteBatch(@Param("staffUidList") List<String> staffUidList);
     /**
      * 通过用户名查询是否存在此用户
      * @param userName
@@ -25,7 +28,10 @@ public interface UserLoginMapper {
      */
     UserLogin selectByUserName(String userName);
 
-    int updateByPrimaryKeySelective(UserLogin record);
 
-    int updateByPrimaryKey(UserLogin record);
+    List<UserLogin> selectAllUserLoginBySql(UserLogin userLogin);
+
+    int selectAllCount();
+
+    List<String> selectRoleNames(String userName);
 }

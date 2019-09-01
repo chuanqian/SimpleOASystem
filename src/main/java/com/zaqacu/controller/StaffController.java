@@ -25,6 +25,9 @@ public class StaffController {
     @GetMapping(value = "getAllStaff.staff")
     @ResponseBody
     public HashMap<String, Object> getAllStaff(Staff staff) {
+        if(staff.getStaffName()!=null && staff.getStaffName()!=""){
+            staff.setStaffName("%"+staff.getStaffName()+"%");
+        }
         return staffService.getAllStaff(staff);
     }
 
@@ -37,13 +40,13 @@ public class StaffController {
 
     @RequestMapping("addStaffAndUserLoginAndArchivesAndPact.staff")
     @ResponseBody
-    public boolean addStaffAndUserLoginAndArchivesAndPact(String limitName, String userName, String userPassword,
+    public boolean addStaffAndUserLoginAndArchivesAndPact(String userName, String userPassword,
                                                           String staffName, String staffSex, String staffBirth, String staffPhone,
                                                           String staffEmail, String staffXueli, String staffPosition,
                                                           String staffInTime, String staffStatusId, String staffNote, String archivesName,
                                                           String archivesInfo, String archivesNote, String pactCreateTime, String pactEndTime,
                                                           String pactInfo, String pactNote) {
-        boolean b = staffService.addStaff(limitName, userName, userPassword,
+        boolean b = staffService.addStaff(userName, userPassword,
                 staffName, staffSex, staffBirth, staffPhone,
                 staffEmail, staffXueli, staffPosition,
                 staffInTime, staffStatusId, staffNote, archivesName,
@@ -58,6 +61,15 @@ public class StaffController {
     @ResponseBody
     public boolean updateStaff(Staff staff){
         return staffService.editStaff(staff);
+    }
+
+    @RequestMapping(value = "toGiveEnable.enable")
+    @ResponseBody
+    public boolean toGiveEnable(String staffUid,String staffName,String roleIds){
+        System.out.println(staffUid);
+        System.out.println(staffName);
+        System.out.println(roleIds);
+        return staffService.toGiveEnable(staffUid,staffName,roleIds);
     }
 
 }

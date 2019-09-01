@@ -19,6 +19,9 @@ public class DepartmentController {
     @GetMapping(value = "getAllDepartmentBySql.department")
     @ResponseBody
     public HashMap<String,Object> getAllDepartment(Department department) {
+        if(department.getDepartmentName()!=null && department.getDepartmentName()!="") {
+            department.setDepartmentName("%" + department.getDepartmentName() + "%");
+        }
         return departmentService.getAllDepartment(department);
     }
     @GetMapping(value = "toDepartment.department")
@@ -78,11 +81,20 @@ public class DepartmentController {
         return flag;
     }
 
-
+    /**
+     * 获取封装后的部门信息
+     * @return
+     */
     @RequestMapping(value="getAllDepartmentBB.department",method = RequestMethod.POST)
     @ResponseBody
     public List<Department> getAllDepartmentBB(){
         return departmentService.getAllDepartmentBB();
+    }
+
+    @RequestMapping(value = "getAllDepartmentAA.department")
+    @ResponseBody
+    public List<Department> getAllDepartmentAA(){
+        return departmentService.getAllDepartmentAA();
     }
 
 }

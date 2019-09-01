@@ -29,7 +29,22 @@
     <select id="selectPersonnelBySql" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from personnel limit #{start},#{rows}
+        from personnel
+        <where>
+            <if test="startTime != null">
+                personnel_time &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and personnel_time &lt;= #{endTime}
+            </if>
+            <if test="personnelNewPositionId != null">
+                and personnel_new_position_id=#{personnelNewPositionId}
+            </if>
+            <if test="staffName != null and staffName != ''">
+                and personnel_staff_uid in (select staff_uid from staff where staff_name like #{staffName})
+            </if>
+        </where>
+        limit #{start},#{rows}
     </select>
 
     <select id="getAllCouunt" resultType="Integer">

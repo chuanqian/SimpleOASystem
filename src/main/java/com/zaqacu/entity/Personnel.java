@@ -18,6 +18,36 @@ public class Personnel extends MyPage {
 
     private String personnelCause;
 
+    private String staffName;
+
+    private Date startTime;
+
+    private Date endTime;
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = TimeUtls.getTimeNull(startTime);
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = TimeUtls.getTimeNull(endTime);
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
+
     public Integer getPersonnelId() {
         return personnelId;
     }

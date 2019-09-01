@@ -50,17 +50,13 @@
 <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>--%>
             </div>
             <div class="wu-toolbar-search">
-                <label>起始时间：</label><input class="easyui-datebox" style="width:100px">
-                <label>结束时间：</label><input class="easyui-datebox" style="width:100px">
-                <label>用户组：</label>
-                <select class="easyui-combobox" panelHeight="auto" style="width:100px">
-                    <option value="0">选择用户组</option>
-                    <option value="1">黄钻</option>
-                    <option value="2">红钻</option>
-                    <option value="3">蓝钻</option>
+                <%--<label>起始时间：</label><input class="easyui-datebox" style="width:100px">
+                <label>结束时间：</label><input class="easyui-datebox" style="width:100px">--%>
+                <label>职务：</label>
+                <select id="pid" class="easyui-combobox" panelHeight="auto" style="width:100px">
                 </select>
-                <label>关键词：</label><input class="wu-text" style="width:100px">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
+                <label>员工姓名：</label><input id="likename" class="wu-text" style="width:100px">
+                <a href="javascript:opensearch()" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
             </div>
         </div>
         <!-- 工具栏结束 -->
@@ -104,6 +100,22 @@
 </body>
 <!-- 模态框结束-->
 <script type="text/javascript">
+
+    /**
+     * 加载职位pid
+     */
+    $("#pid").combobox({
+        url: "getAllPosition.position",//url*
+        valueField: "positionId", //相当于 option 中的 value 发送到后台的
+        textField: "positionName"//option中间的内容 显示给用户看的
+    });
+
+    function opensearch(){
+        var pid=$("#pid").combobox("getValue");
+        var liskname=$("#likename").val();
+        var url='getAllStaffByPersonnel.personnel?staffPosition='+pid+"&staffName="+liskname;
+        openthe(url);
+    }
 
 
     /**
@@ -240,38 +252,42 @@
     /**
      * 载入数据
      */
-    $('#wu-datagrid').datagrid({
-        url: 'getAllStaffByPersonnel.personnel',
-        method: "get",//提交方式
-        rownumbers: true,//显示行号
-        singleSelect: false,
-        pagination: false, //如果表格需要支持分页，必须设置该选项为true
-        pageSize: 3, //表格中每页显示的行数
-        pageList: [3, 5, 10],
-        fitColumns: true,
-        fit: true,
-        columns: [[
-            {checkbox: true},
-            {field: 'staff', title: '员工姓名', width: 100,
-                formatter:function (value) {
-                    console.log(value.staffName);
-                    return value.staffName;
-                }
-            },
+    openthe('getAllStaffByPersonnel.personnel');
+    function openthe(url){
+        $('#wu-datagrid').datagrid({
+            url: url,
+            method: "get",//提交方式
+            rownumbers: true,//显示行号
+            singleSelect: false,
+            pagination: true, //如果表格需要支持分页，必须设置该选项为true
+            pageSize: 5, //表格中每页显示的行数
+            pageList: [5, 10, 15],
+            fitColumns: true,
+            fit: true,
+            columns: [[
+                {checkbox: true},
+                {field: 'staff', title: '员工姓名', width: 100,
+                    formatter:function (value) {
+                        console.log(value.staffName);
+                        return value.staffName;
+                    }
+                },
 
-            {field: 'position', title: '员工职务', width: 100,
-                formatter:function (value)                          {
-                    console.log(value.positionName);
-                    return value.positionName;
-                }
-            },
-            {field: 'staffInTime', title: '员工入职时间', width: 100,
-                formatter:function (value) {
-                    console.log(value)
+                {field: 'position', title: '员工职务', width: 100,
+                    formatter:function (value)                          {
+                        console.log(value.positionName);
+                        return value.positionName;
+                    }
+                },
+                {field: 'staffInTime', title: '员工入职时间', width: 100,
+                    formatter:function (value) {
+                        console.log(value)
 
-                    return value
+                        return value
+                    }
                 }
-            }
-        ]]
-    });
+            ]]
+        });
+    }
+
 </script>

@@ -18,6 +18,34 @@ public class Check extends MyPage {
 
     private String checkStaffUid;
 
+    private Date startTime;
+    private Date endTime;
+    private String staffName;
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = TimeUtls.getTimeNull(startTime);
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = TimeUtls.getTimeNull(endTime);
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
+
     public Integer getCheckId() {
         return checkId;
     }

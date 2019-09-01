@@ -50,17 +50,13 @@
 <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>--%>
             </div>
             <div class="wu-toolbar-search">
-                <label>起始时间：</label><input class="easyui-datebox" style="width:100px">
-                <label>结束时间：</label><input class="easyui-datebox" style="width:100px">
-                <label>用户组：</label>
-                <select class="easyui-combobox" panelHeight="auto" style="width:100px">
-                    <option value="0">选择用户组</option>
-                    <option value="1">黄钻</option>
-                    <option value="2">红钻</option>
-                    <option value="3">蓝钻</option>
+                <label>起始时间：</label><input id="starttime" class="easyui-datebox" style="width:100px">
+                <label>结束时间：</label><input id="endtime" class="easyui-datebox" style="width:100px">
+                <label>新职务：</label>
+                <select id="newpid" class="easyui-combobox" panelHeight="auto" style="width:100px">
                 </select>
-                <label>关键词：</label><input class="wu-text" style="width:100px">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
+                <label>员工姓名：</label><input id="staffname" class="wu-text" style="width:100px">
+                <a href="javascript:opensearch()" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
             </div>
         </div>
         <!-- 工具栏结束 -->
@@ -89,6 +85,28 @@
 </body>
 <!-- 模态框结束-->
 <script type="text/javascript">
+
+    /**
+     * 加载职位newpid
+     */
+    $("#newpid").combobox({
+        url: "getAllPosition.position",//url*
+        valueField: "positionId", //相当于 option 中的 value 发送到后台的
+        textField: "positionName"//option中间的内容 显示给用户看的
+    });
+
+    /**
+     * 模糊查询
+     */
+    function opensearch() {
+        var starttime=$("#starttime").datebox("getValue");
+        var endtime=$("#endtime").datebox("getValue");
+        var positionId=$("#newpid").combobox("getValue");
+        var staffName=$("#staffname").val();
+        var url='getAllPersonnelBySql.personsition?startTime='+starttime+'&endTime='+endtime+'&personnelNewPositionId='+positionId+'&staffName='+staffName;
+        console.log(url);
+        openthe(url);
+    }
 
 
     /**
@@ -220,27 +238,31 @@
     /**
      * 载入数据
      */
-    $('#wu-datagrid').datagrid({
-        url: 'getAllPersonnelBySql.personsition',
-        method: "get",//提交方式
-        rownumbers: true,//显示行号
-        singleSelect: false,
-        pagination: true, //如果表格需要支持分页，必须设置该选项为true
-        pageSize: 2, //表格中每页显示的行数
-        pageList: [2, 5, 10],
-        fitColumns: true,
-        fit: true,
-        columns: [[
-            {checkbox: true},
-            {field: 'staff', title: '员工姓名', width: 100,
-                formatter:function (value) {
-                    return value.staffName;
-                }
-            },
-            {field: 'oldName', title: '员工原职务', width: 100},
-            {field: 'newNmae', title: '员工新职务', width: 100},
-            {field: 'personnelTime', title: '调动时间', width: 100},
-            {field: 'personnelCause', title: '调动原因', width: 100}
-        ]]
-    });
+    openthe('getAllPersonnelBySql.personsition');
+    function openthe(url){
+        $('#wu-datagrid').datagrid({
+            url: url,
+            method: "get",//提交方式
+            rownumbers: true,//显示行号
+            singleSelect: false,
+            pagination: true, //如果表格需要支持分页，必须设置该选项为true
+            pageSize: 2, //表格中每页显示的行数
+            pageList: [2, 5, 10],
+            fitColumns: true,
+            fit: true,
+            columns: [[
+                {checkbox: true},
+                {
+                    field: 'staff', title: '员工姓名', width: 100,
+                    formatter: function (value) {
+                        return value.staffName;
+                    }
+                },
+                {field: 'oldName', title: '员工原职务', width: 100},
+                {field: 'newNmae', title: '员工新职务', width: 100},
+                {field: 'personnelTime', title: '调动时间', width: 100},
+                {field: 'personnelCause', title: '调动原因', width: 100}
+            ]]
+        });
+    }
 </script>

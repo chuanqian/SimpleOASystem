@@ -31,6 +31,10 @@
         </foreach>
     </select>
 
+    <select id="selectByStaffUid" resultType="String">
+        select check_staff_status_name from check_staff_status where check_staff_status_uid=#{checkStaffStatusUid}
+    </select>
+
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from check_staff_status
@@ -101,6 +105,16 @@
       check_staff_status_name = #{checkStaffStatusName,jdbcType=VARCHAR}
     where check_staff_status_id = #{checkStaffStatusId,jdbcType=INTEGER}
   </update>
+
+    <update id="updateByStaffUidAndStatusName">
+        update check_staff_status set check_staff_status_name = #{checkStaffStatusName,jdbcType=VARCHAR}
+        where check_staff_status_uid = #{checkStaffStatusUid,jdbcType=VARCHAR}
+    </update>
+
+
+    <update id="updateStatusNameByTimes">
+        update check_staff_status set check_staff_status_name = #{checkStaffStatusName,jdbcType=VARCHAR}
+    </update>
 
 
 </mapper>

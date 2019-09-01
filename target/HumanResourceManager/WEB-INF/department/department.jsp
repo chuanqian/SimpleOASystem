@@ -50,17 +50,17 @@
                 <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>
             </div>
             <div class="wu-toolbar-search">
-                <label>起始时间：</label><input class="easyui-datebox" style="width:100px">
+                <%--<label>起始时间：</label><input class="easyui-datebox" style="width:100px">
                 <label>结束时间：</label><input class="easyui-datebox" style="width:100px">
-                <label>用户组：</label>
-                <select class="easyui-combobox" panelHeight="auto" style="width:100px">
+                <label>用户组：</label>--%>
+                <%--<select class="easyui-combobox" panelHeight="auto" style="width:100px">
                     <option value="0">选择用户组</option>
                     <option value="1">黄钻</option>
                     <option value="2">红钻</option>
                     <option value="3">蓝钻</option>
-                </select>
-                <label>关键词：</label><input class="wu-text" style="width:100px">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
+                </select>--%>
+                <label>部门名称：</label><input id="deptName" class="wu-text" style="width:100px">
+                <a href="javascript:opensearch()" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
             </div>
         </div>
         <!-- 工具栏结束 -->
@@ -96,6 +96,14 @@
 <!-- 模态框结束-->
 <script type="text/javascript">
 
+    /**
+     * 模糊查询
+     */
+    function opensearch() {
+        var deptname=$("#deptName").val();
+        var url='getAllDepartmentBySql.department?departmentName='+deptname;
+        openthe(url);
+    }
 
     /**
      * 添加记录
@@ -104,6 +112,7 @@
         $('#wu-form').form('submit', {
             url: 'addDepartment.department',
             success: function (data) {
+                var data = eval('(' + data + ')');
                 console.log(data)
                 if (data) {
                     $.messager.alert('信息提示', '提交成功！', 'info');
@@ -124,6 +133,7 @@
         $('#wu-form').form('submit', {
             url: 'editDepartment.department',
             success: function (data) {
+                var data = eval('(' + data + ')');
                 if (data) {
                     $.messager.alert('信息提示', '提交成功！', 'info');
                     $('#wu-dialog').dialog('close');
@@ -228,24 +238,27 @@
     /**
      * 载入数据
      */
-    $('#wu-datagrid').datagrid({
-        url: 'getAllDepartmentBySql.department',
-        method: "get",//提交方式
-        rownumbers: true,//显示行号
-        singleSelect: false,
-        pagination: true, //如果表格需要支持分页，必须设置该选项为true
-        pageSize: 2, //表格中每页显示的行数
-        pageList: [2, 5, 10],
-        fitColumns: true,
-        fit: true,
-        columns: [[
-            {checkbox: true},
-            {field: 'departmentName', title: '部门名称', width: 100},
+    openthe('getAllDepartmentBySql.department')
+    function openthe(url) {
+        $('#wu-datagrid').datagrid({
+            url: url,
+            method: "get",//提交方式
+            rownumbers: true,//显示行号
+            singleSelect: false,
+            pagination: true, //如果表格需要支持分页，必须设置该选项为true
+            pageSize: 5, //表格中每页显示的行数
+            pageList: [5, 10, 15],
+            fitColumns: true,
+            fit: true,
+            columns: [[
+                {checkbox: true},
+                {field: 'departmentName', title: '部门名称', width: 100},
 
-            {field: 'departmentTotalnum', title: '部门总职务数', width: 100},
-            {field: 'departmentLacknum', title: '部门缺少职务数', width: 100},
-            {field: 'departmentExitsnum', title: '部门现有职务数', width: 100}
+                {field: 'departmentTotalnum', title: '部门总职务数', width: 100},
+                {field: 'departmentLacknum', title: '部门缺少职务数', width: 100},
+                {field: 'departmentExitsnum', title: '部门现有职务数', width: 100}
 
-        ]]
-    });
+            ]]
+        });
+    }
 </script>

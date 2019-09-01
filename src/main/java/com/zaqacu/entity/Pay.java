@@ -2,7 +2,7 @@ package com.zaqacu.entity;
 
 import java.util.Date;
 
-public class Pay {
+public class Pay extends MyPage{
 
     private Integer payId;
 
@@ -19,6 +19,36 @@ public class Pay {
     private Double payTotal;
 
     private Date payTime;
+
+    private Date startTimes;
+
+    private Date endTimes;
+
+    private String staffNamePay;
+
+    public Date getStartTime() {
+        return startTimes;
+    }
+
+    public void setStartTimes(Date startTime) {
+        this.startTimes = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTimes;
+    }
+
+    public void setEndTimes(Date endTime) {
+        this.endTimes = endTime;
+    }
+
+    public String getStaffNamePay() {
+        return staffNamePay;
+    }
+
+    public void setStaffNamePay(String staffNamePay) {
+        this.staffNamePay = staffNamePay;
+    }
 
     public Integer getPayId() {
         return payId;

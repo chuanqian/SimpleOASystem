@@ -9,7 +9,7 @@ public class SaltUtils {
         String result = new SimpleHash("MD5", userPassword, salt, 1024).toString();
         return result;
     }
-//    public static void main(String[] args) {
-//        System.out.println(getSaltPassword("123","admin"));
-//    }
+    public static void main(String[] args) {
+        System.out.println(getSaltPassword("fengguiping","chuanchuan"));
+    }
 }

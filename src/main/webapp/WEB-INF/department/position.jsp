@@ -50,17 +50,13 @@
                 <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>
             </div>
             <div class="wu-toolbar-search">
-                <label>起始时间：</label><input class="easyui-datebox" style="width:100px">
-                <label>结束时间：</label><input class="easyui-datebox" style="width:100px">
-                <label>用户组：</label>
-                <select class="easyui-combobox" panelHeight="auto" style="width:100px">
-                    <option value="0">选择用户组</option>
-                    <option value="1">黄钻</option>
-                    <option value="2">红钻</option>
-                    <option value="3">蓝钻</option>
+                <%--<label>起始时间：</label><input class="easyui-datebox" style="width:100px">
+                <label>结束时间：</label><input class="easyui-datebox" style="width:100px">--%>
+                <label>部门名称：</label>
+                <select id="departmentID" class="easyui-combobox" panelHeight="auto" style="width:100px">
                 </select>
-                <label>关键词：</label><input class="wu-text" style="width:100px">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
+                <label>职位名称：</label><input id="positionname" class="wu-text" style="width:100px">
+                <a href="javascript:opensearch()" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
             </div>
         </div>
         <!-- 工具栏结束 -->
@@ -84,14 +80,14 @@
             <tr>
                 <td align="right">部门:</td>
                 <td>
-                    <select name="positionDepartmentId"  class="wu-text easyui-combobox"  panelHeight="auto" id="dept">
+                    <select name="positionDepartmentId" class="wu-text easyui-combobox" panelHeight="auto" id="dept">
                     </select>
                 </td>
             </tr>
             <tr>
                 <td width="60" align="right">总人数:</td>
                 <td>
-                    <input id="totalId" type="text" name="positionTotal" class="wu-text"  />
+                    <input id="totalId" type="text" name="positionTotal" class="wu-text"/>
                 </td>
             </tr>
             <tr>
@@ -107,6 +103,24 @@
 <!-- 模态框结束-->
 <script type="text/javascript">
 
+    /**
+     * 默认加载下拉菜单的信息
+     */
+    $("#departmentID").combobox({
+        url: "getAllDepartmentAA.department",//url*
+        valueField: "departmentId", //相当于 option 中的 value 发送到后台的
+        textField: "departmentName"//option中间的内容 显示给用户看的
+    });
+
+    /**
+     * 模糊查询
+     */
+    function opensearch() {
+        var departmentId = $("#departmentID").combobox("getValue");
+        var positionName = $("#positionname").val();
+        var url = 'getAllPositionBysql.position?positionDepartmentId='+departmentId+"&positionName="+positionName;
+        openthe(url);
+    }
 
     /**
      * 添加记录
@@ -115,6 +129,7 @@
         $('#wu-form').form('submit', {
             url: 'addPosition.position',
             success: function (data) {
+                var data = eval('(' + data + ')');
                 console.log(data)
                 if (data) {
                     $.messager.alert('信息提示', '提交成功！', 'info');
@@ -135,6 +150,7 @@
         $('#wu-form').form('submit', {
             url: 'editPosition.position',
             success: function (data) {
+                var data = eval('(' + data + ')');
                 if (data) {
                     $.messager.alert('信息提示', '提交成功！', 'info');
                     $('#wu-dialog').dialog('close');
@@ -181,7 +197,7 @@
      */
     function openAdd() {
         $('#wu-form').form('clear');
-        $("#totalId").prop("readonly",false);
+        $("#totalId").prop("readonly", false);
         $("#dept").combobox({
             url: "getAllDepartmentBB.department",//url*
             valueField: "departmentId", //相当于 option 中的 value 发送到后台的
@@ -218,7 +234,7 @@
             return;
         }
         $('#wu-form').form('clear');
-        $("#totalId").prop("readonly",true);
+        $("#totalId").prop("readonly", true);
 
         //绑定值
         $('#wu-form').form('load', item)
@@ -250,29 +266,33 @@
     /**
      * 载入数据
      */
-    $('#wu-datagrid').datagrid({
-        url: 'getAllPositionBysql.position',
-        method: "get",//提交方式
-        rownumbers: true,//显示行号
-        singleSelect: false,
-        pagination: true, //如果表格需要支持分页，必须设置该选项为true
-        pageSize: 3, //表格中每页显示的行数
-        pageList: [3, 5, 10],
-        fitColumns: true,
-        fit: true,
-        columns: [[
-            {checkbox: true},
-            {field: 'positionName', title: '职务名称', width: 100},
-            {field: 'department', title: '部门名称', width: 100,
-                formatter: function (value) {
-                    console.log(value);
-                    return value.departmentName;
-                }
-            },
+    openthe('getAllPositionBysql.position');
+    function openthe(url) {
+        $('#wu-datagrid').datagrid({
+            url: url,
+            method: "get",//提交方式
+            rownumbers: true,//显示行号
+            singleSelect: false,
+            pagination: true, //如果表格需要支持分页，必须设置该选项为true
+            pageSize: 3, //表格中每页显示的行数
+            pageList: [3, 5, 10],
+            fitColumns: true,
+            fit: true,
+            columns: [[
+                {checkbox: true},
+                {field: 'positionName', title: '职务名称', width: 100},
+                {
+                    field: 'department', title: '部门名称', width: 100,
+                    formatter: function (value) {
+                        console.log(value);
+                        return value.departmentName;
+                    }
+                },
 
-            {field: 'positionTotal', title: '职务总人数', width: 100},
-            {field: 'positionExitsnum', title: '现有人数', width: 100}
+                {field: 'positionTotal', title: '职务总人数', width: 100},
+                {field: 'positionExitsnum', title: '现有人数', width: 100}
 
-        ]]
-    });
+            ]]
+        });
+    }
 </script>

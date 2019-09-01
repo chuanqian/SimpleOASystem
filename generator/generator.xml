@@ -9,6 +9,12 @@
     <!-- 驱动jar包，mssql使用jtds-1.2.jar,mysql使用mysql-connector-java-5.0.8-bin.jar -->
     <classPathEntry location="./mysql-connector-java-commercial-5.1.25-bin.jar"/>
     <context id="FreeCMS_Tables" targetRuntime="MyBatis3">
+        <!-- 自动去除注释 -->
+        <commentGenerator>
+            <property name="suppressDate" value="true" />
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
         <!-- mysql配置 -->
         <!-- 改1:  数据名和密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
@@ -43,11 +49,19 @@
 
         <!-- 要生成的表 -->
         <!-- 改5  表名和javabean的类名 -->
-        <!--<table tableName="userlogin" domainObjectName="UserLogin"
+        <table tableName="userlogin" domainObjectName="UserLogin"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>
-        <table tableName="department" domainObjectName="Department"
+        <table tableName="permissions" domainObjectName="Permissions"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="role" domainObjectName="Role"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <!--<table tableName="department" domainObjectName="Department"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>-->
@@ -91,10 +105,10 @@
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>-->
-        <table tableName="check_staff_status" domainObjectName="CheckStaffStatus"
+        <!--<table tableName="check_staff_status" domainObjectName="CheckStaffStatus"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+               selectByExampleQueryId="false"/>-->
         <!--<table tableName="check_tb" domainObjectName="Check"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"

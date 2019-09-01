@@ -34,33 +34,24 @@
         <!-- 工具栏开始 -->
         <div id="wu-toolbar">
             <div class="wu-toolbar-button">
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openAdd()" plain="true">添加</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openAdd()" plain="true">添加</a>--%>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit()" plain="true">修改</a>
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove()" plain="true">删除</a>--%>
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="cancel()" plain="true">取消</a>--%>
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-reload" onclick="reload()" plain="true">刷新</a>--%>
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-print" onclick="openAdd()" plain="true">打印</a>--%>
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-help" onclick="openEdit()" plain="true">帮助</a>--%>
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-undo" onclick="remove()" plain="true">撤销</a>--%>
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-redo" onclick="cancel()" plain="true">重做</a>--%>
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-sum" onclick="reload()" plain="true">总计</a>--%>
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-back" onclick="reload()" plain="true">返回</a>--%>
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="reload()" plain="true">提示</a>--%>
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="reload()" plain="true">保存</a>--%>
-<%--                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove()" plain="true">删除</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="cancel()" plain="true">取消</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-reload" onclick="reload()" plain="true">刷新</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-print" onclick="openAdd()" plain="true">打印</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-help" onclick="openEdit()" plain="true">帮助</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-undo" onclick="remove()" plain="true">撤销</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-redo" onclick="cancel()" plain="true">重做</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-sum" onclick="reload()" plain="true">总计</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-back" onclick="reload()" plain="true">返回</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="reload()" plain="true">提示</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="reload()" plain="true">保存</a>--%>
+                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>--%>
             </div>
             <div class="wu-toolbar-search">
-                <label>起始时间：</label><input class="easyui-datebox" style="width:100px">
-                <label>结束时间：</label><input class="easyui-datebox" style="width:100px">
-                <label>用户组：</label>
-                <select class="easyui-combobox" panelHeight="auto" style="width:100px">
-                    <option value="0">选择用户组</option>
-                    <option value="1">黄钻</option>
-                    <option value="2">红钻</option>
-                    <option value="3">蓝钻</option>
-                </select>
-                <label>关键词：</label><input class="wu-text" style="width:100px">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
+                <label>员工档案名称：</label><input id="archivesname" class="wu-text" style="width:100px">
+                <a href="javascript:opensearch()" class="easyui-linkbutton" iconCls="icon-search">开始检索</a>
             </div>
         </div>
         <!-- 工具栏结束 -->
@@ -101,6 +92,25 @@
 <!-- 模态框结束-->
 <script type="text/javascript">
 
+    /**
+     * 加载职位newpid
+     */
+    $("#pid").combobox({
+        url: "getAllPosition.position",//url*
+        valueField: "positionId", //相当于 option 中的 value 发送到后台的
+        textField: "positionName"//option中间的内容 显示给用户看的
+    });
+
+    /**
+     * 模糊查询
+     */
+    function opensearch() {
+        var archivesname = $("#archivesname").val();
+        var url ='getAllArchivesBySql.staff?archivesName='+archivesname;
+        console.log(url);
+        openthe(url);
+    }
+
 
     /**
      * 添加记录
@@ -129,6 +139,7 @@
         $('#wu-form').form('submit', {
             url: 'editArchives.staff',
             success: function (data) {
+                var data = eval('(' + data + ')');
                 if (data) {
                     $.messager.alert('信息提示', '提交成功！', 'info');
                     $('#wu-dialog').dialog('close');
@@ -209,7 +220,7 @@
 
 
         //绑定值
-        $('#wu-form').form('load', item)
+        $('#wu-form').form('load', item);
 
         $('#wu-dialog').dialog({
             closed: false,
@@ -233,28 +244,32 @@
     /**
      * 载入数据
      */
-    $('#wu-datagrid').datagrid({
-        url: 'getAllArchivesBySql.staff',
-        method: "get",//提交方式
-        rownumbers: true,//显示行号
-        singleSelect: false,
-        pagination: true, //如果表格需要支持分页，必须设置该选项为true
-        pageSize: 3, //表格中每页显示的行数
-        pageList: [3, 5, 10],
-        fitColumns: true,
-        fit: true,
-        columns: [[
-            {checkbox: true},
-            {field: 'staff', title: '员工姓名', width: 100,
-                formatter:function (vaule) {
-                    return vaule.staffName;
-                }
-            },
+    openthe('getAllArchivesBySql.staff');
+    function openthe(url) {
+        $('#wu-datagrid').datagrid({
+            url: url,
+            method: "get",//提交方式
+            rownumbers: true,//显示行号
+            singleSelect: false,
+            pagination: true, //如果表格需要支持分页，必须设置该选项为true
+            pageSize: 5, //表格中每页显示的行数
+            pageList: [5, 10, 15],
+            fitColumns: true,
+            fit: true,
+            columns: [[
+                {checkbox: true},
+                {
+                    field: 'staff', title: '员工姓名', width: 100,
+                    formatter: function (vaule) {
+                        return vaule.staffName;
+                    }
+                },
 
-            {field: 'archivesName', title: '档案名称', width: 100},
-            {field: 'archivesInfo', title: '档案内容', width: 100},
-            {field: 'archivesNote', title: '档案备注', width: 100}
+                {field: 'archivesName', title: '档案名称', width: 100},
+                {field: 'archivesInfo', title: '档案内容', width: 100},
+                {field: 'archivesNote', title: '档案备注', width: 100}
 
-        ]]
-    });
+            ]]
+        });
+    }
 </script>

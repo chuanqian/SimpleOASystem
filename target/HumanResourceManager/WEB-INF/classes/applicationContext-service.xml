@@ -3,16 +3,30 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
-<!--    全局扫描-->
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+    <!--    <task:annotation-driven/>-->
+    <!--配置邮件-->
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <!--邮件服务器地址  -->
+        <property name="host" value="smtp.qq.com"/>
+        <!--登录邮件服务器的用户  -->
+        <property name="username" value="1178995389@qq.com"/>
+        <!--登录邮件服务器的用户的授权码  -->
+
+        <property name="password" value="axoxichnmpambacf"/>
+        <!-- 编码设置 -->
+        <property name="defaultEncoding" value="utf-8"/>
+    </bean>
+    <!--    全局扫描-->
     <context:component-scan base-package="com.zaqacu.service"/>
-<!--    开启aspectj接口-->
+    <context:component-scan base-package="com.zaqacu.test"/>
+    <!--    开启aspectj接口-->
     <aop:aspectj-autoproxy/>
-<!--    配置事务-->
+    <!--    配置事务-->
     <bean id="transationManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>

@@ -19,4 +19,6 @@ public interface DepartmentService {
     Department getOneDepartmentById(int departmentId);
 
     List<Department> getAllDepartmentBB();
+
+    List<Department> getAllDepartmentAA();
 }

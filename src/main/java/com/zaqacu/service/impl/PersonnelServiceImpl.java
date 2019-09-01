@@ -27,8 +27,9 @@ public class PersonnelServiceImpl implements PersonnelService {
     private PersonnelMapper personnelMapper;
 
     @Override
-    public List<PersonnelDto> getAllStaffAndPosition() {
-        List<Staff> staffList = staffService.getAllStaffByPersonnel();
+    public HashMap<String,Object> getAllStaffAndPosition(Staff staff) {
+        staff.setStart((staff.getPage()-1)*staff.getRows());
+        List<Staff> staffList = staffService.getAllStaffByPersonnel(staff);
         List<PersonnelDto> personnelDtos = new ArrayList<>();
         for (int i = 0; i < staffList.size(); i++) {
             PersonnelDto personnelDto = new PersonnelDto();
@@ -42,7 +43,11 @@ public class PersonnelServiceImpl implements PersonnelService {
             personnelDto.setStaffInTime(staffList.get(i).getStaffInTime());
             personnelDtos.add(personnelDto);
         }
-        return personnelDtos;
+        int total=staffService.getCountStaff();
+        HashMap<String,Object> map=new HashMap<>();
+        map.put("total",total);
+        map.put("rows",personnelDtos);
+        return map;
     }
 
     @Override

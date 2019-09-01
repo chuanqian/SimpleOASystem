@@ -39,7 +39,13 @@
     <select id="selectAllDepartment" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from department limit #{start},#{rows}
+        from department
+        <where>
+            <if test="departmentName != null and departmentName != ''">
+                department_name like #{departmentName}
+            </if>
+        </where>
+        limit #{start},#{rows}
     </select>
 
 
