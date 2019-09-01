@@ -47,19 +47,18 @@ public class DepartmentController {
      * @return
      */
     @PostMapping(value = "addDepartment.department")
+    @ResponseBody
     public boolean addDepartment(String departmentName, int departmentTotalnum, int departmentExitsnum){
         Department department=new Department();
         department.setDepartmentName(departmentName);
         department.setDepartmentTotalnum(departmentTotalnum);
         department.setDepartmentExitsnum(departmentExitsnum);
         department.setDepartmentLacknum(departmentTotalnum-departmentExitsnum);
-        int flag=departmentService.addSelectiveDepartment(department);
-        if (flag!=0){
-            return true;
-        }else{
+        System.out.println("dfsafdfefdsfsfefsf");
+        boolean b = departmentService.addSelectiveDepartment(department);
+        System.out.println(b);
+        return b;
 
-            return false;
-        }
     }
 
     /**
@@ -81,13 +80,13 @@ public class DepartmentController {
 
     /**
      * 删除部门
-     * @param removeIds
+     * @param id
      * @return
      */
     @GetMapping(value = "removeDepartment.department")
     @ResponseBody
-    public boolean removeDepartmentIds(String removeIds){
-        boolean flag = departmentService.removeBatch(removeIds);
+    public boolean removeDepartmentIds(String id){
+        boolean flag = departmentService.removeBatch(id);
         return flag;
     }
 

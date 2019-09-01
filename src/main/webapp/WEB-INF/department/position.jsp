@@ -36,7 +36,7 @@
             <div class="wu-toolbar-button">
                 <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openAdd()" plain="true">添加</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit()" plain="true">修改</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove()" plain="true">删除</a>
+                <%--<a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove()" plain="true">删除</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="cancel()" plain="true">取消</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-reload" onclick="reload()" plain="true">刷新</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-print" onclick="openAdd()" plain="true">打印</a>
@@ -47,7 +47,7 @@
                 <a href="#" class="easyui-linkbutton" iconCls="icon-back" onclick="reload()" plain="true">返回</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="reload()" plain="true">提示</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="reload()" plain="true">保存</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>--%>
             </div>
             <div class="wu-toolbar-search">
                 <%--<label>起始时间：</label><input class="easyui-datebox" style="width:100px">
@@ -173,12 +173,12 @@
                 var ids = "";
                 $(items).each(function () {
 
-                    ids += this.sysId + ","
+                    ids += this.positionId + ","
                 });
                 console.log(ids);
 
                 $.ajax({
-                    url: 'del.do',
+                    url: '',
                     data: {id: ids},
                     success: function (data) {
                         if (data) {

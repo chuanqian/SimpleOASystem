@@ -1,6 +1,7 @@
 package com.zaqacu.dao;
 
 import com.zaqacu.entity.Department;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface DepartmentMapper {
 
     int deleteByPrimaryKey(Integer departmentId);
 
-    int deleteBatch(List<Integer> departmentId);
+    int deleteBatch(@Param("departmentId") List<Integer> departmentId);
 
     int insert(Department record);
 

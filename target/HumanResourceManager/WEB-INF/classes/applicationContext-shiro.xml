@@ -41,6 +41,7 @@
                 /*.personnel=orFilter[manager,personnel]
                 /*.role=orFilter[manager]
                 <!--authc表示访问该链接，必须要进行登录认证  -->
+                /toIndex.do=authc
 <!--                /*.check=authc
                 /*.staff=authc
                 /*.position=authc

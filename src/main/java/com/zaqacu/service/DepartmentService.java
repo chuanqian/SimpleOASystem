@@ -18,7 +18,7 @@ public interface DepartmentService {
      * @param department 部门
      * @return
      */
-    int addSelectiveDepartment(Department department);
+    boolean addSelectiveDepartment(Department department);
 
     /**
      * 修改部门信息
