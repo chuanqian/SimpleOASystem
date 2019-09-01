@@ -77,6 +77,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentFlag&&staffFalg;
     }
 
+    /**
+     * 批量删除部门
+     * @param removeId 部门编号IDs
+     * @return
+     */
     @Override
     public boolean removeBatch(String removeId) {
         String[] departmentIds=removeId.split(",");
@@ -101,6 +106,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentMapper.selectByPrimaryKey(departmentId);
     }
 
+    /**
+     * 获取部门信息
+     * @return
+     */
     @Override
     public List<Department> getAllDepartmentBB() {
         List<Department> departments = departmentMapper.selectAllDepartmentBB();

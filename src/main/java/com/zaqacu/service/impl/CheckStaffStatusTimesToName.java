@@ -21,6 +21,10 @@ public class CheckStaffStatusTimesToName {
     private EmailService emailService;
     @Autowired
     private StaffService staffService;
+
+    /**
+     * 定时改变员工考情状态
+     */
     //3.添加定时任务
     @Scheduled(cron = "0 0 6 * * MON,TUE,WED,THU,FRI")
     //或直接指定时间间隔，例如：5秒
@@ -30,6 +34,9 @@ public class CheckStaffStatusTimesToName {
         checkStaffStatusService.editStatusNameByTimes(CheckTypeConstant.NOTCHECK);
     }
 
+    /**
+     * 定时邮箱提醒
+     */
     @Scheduled(cron = "0 30 8 * * MON,TUE,WED,THU,FRI")
     private void configureTimes(){
         System.out.println("执行动态的代码："+123456789);

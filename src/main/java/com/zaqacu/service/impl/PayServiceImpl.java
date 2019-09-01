@@ -27,6 +27,15 @@ public class PayServiceImpl implements PayService {
     @Autowired
     private StaffService staffService;
 
+    /**
+     * 增加薪酬记录
+     * @param staffUid 员工编号
+     * @param StaffName 员工兴民
+     * @param payBasicId 基本拿工资
+     * @param payMertisId 绩效工资
+     * @param payTime 发放时间
+     * @return
+     */
     @Override
     public boolean addPay(String staffUid, String StaffName, String payBasicId, String payMertisId, String payTime) {
         Pay pay = new Pay();
@@ -58,6 +67,11 @@ public class PayServiceImpl implements PayService {
         return payMapper.insertSelective(pay) != 0 ? true : false;
     }
 
+    /**
+     * 分页获取薪酬
+     * @param pay
+     * @return
+     */
     @Override
     public HashMap<String, Object> getPayBySql(Pay pay) {
         pay.setStart((pay.getPage() - 1) * pay.getRows());
@@ -82,6 +96,11 @@ public class PayServiceImpl implements PayService {
         return map;
     }
 
+    /**
+     * 删除薪酬
+     * @param ids id[]
+     * @return
+     */
     @Override
     public boolean removePayByIds(String ids) {
         String[] idss = ids.split(",");

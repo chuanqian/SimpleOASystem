@@ -17,6 +17,11 @@ public class MertisMoneyServiceImpl implements MertisMoneyService {
     @Autowired
     private MertisMoneyMapper mertisMoneyMapper;
 
+    /**
+     * 分页查询绩效信息
+     * @param mertisMoney 绩效
+     * @return
+     */
     @Override
     public HashMap<String, Object> getMertisMoneyBySql(MertisMoney mertisMoney) {
         mertisMoney.setStart((mertisMoney.getPage() - 1) * mertisMoney.getRows());
@@ -36,6 +41,13 @@ public class MertisMoneyServiceImpl implements MertisMoneyService {
         return map;
     }
 
+    /**
+     * 修改绩效
+     * @param mertisMoneyId 绩效id
+     * @param mertisPercentage 绩效百分比
+     * @param mertisMoneyNum 绩效金额
+     * @return
+     */
     @Override
     public boolean editMertisMoneyByMertisId(String mertisMoneyId,String mertisPercentage,String mertisMoneyNum) {
         int index=mertisPercentage.indexOf("%");
@@ -46,6 +58,11 @@ public class MertisMoneyServiceImpl implements MertisMoneyService {
         return mertisMoneyMapper.updateByPrimaryKeySelective(mertisMoney) != 0 ? true : false;
     }
 
+    /**
+     * 删除绩效
+     * @param ids 数组id
+     * @return
+     */
     @Override
     public boolean removeMertisBatch(String ids) {
         String[] mertisids = ids.split(",");
@@ -56,6 +73,12 @@ public class MertisMoneyServiceImpl implements MertisMoneyService {
         return mertisMoneyMapper.deleteByMertisIdsBatch(mertisMoneyIds) != 0 ? true : false;
     }
 
+    /**
+     * 增加绩效
+     * @param mertisPercentage 百分比
+     * @param mertisMoneyNum 金额
+     * @return
+     */
     @Override
     public boolean addOneMertisMoney(String mertisPercentage,String mertisMoneyNum) {
 
@@ -66,6 +89,10 @@ public class MertisMoneyServiceImpl implements MertisMoneyService {
         return mertisMoneyMapper.insertSelective(mertisMoney) != 0 ? true : false;
     }
 
+    /**
+     * 获得全部绩效
+     * @return
+     */
     @Override
     public List<MertisMoneyDto> getAllMertisMoney() {
         List<MertisMoney> mertisMoneyList = mertisMoneyMapper.selectAllMertisMoney();
@@ -80,11 +107,21 @@ public class MertisMoneyServiceImpl implements MertisMoneyService {
         return mertisMoneyDtos;
     }
 
+    /**
+     * 获取绩效通过id
+     * @param mertisMoneyId 绩效id
+     * @return
+     */
     @Override
     public double getOneMertisById(int mertisMoneyId) {
         return mertisMoneyMapper.selectOneMertisById(mertisMoneyId);
     }
 
+    /**
+     * 通过id获取
+     * @param mertisMoneyId 绩效id
+     * @return
+     */
     @Override
     public MertisMoney getByPrimaryKey(int mertisMoneyId) {
         return mertisMoneyMapper.selectByPrimaryKey(mertisMoneyId);

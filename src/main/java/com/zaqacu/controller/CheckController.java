@@ -19,12 +19,20 @@ public class CheckController {
     @Autowired
     private CheckService checkService;
 
-
+    /**
+     * 员工考勤页面
+     * @return
+     */
     @RequestMapping(value = "toCheckStaff.check",method = RequestMethod.GET)
     public String toCheckStaff(){
         return "check/checkstaff";
     }
 
+    /**
+     * 展示员工信息和考勤状态页面
+     * @param staff
+     * @return
+     */
     @RequestMapping(value = "checkStaffShow.check",method = RequestMethod.GET)
     @ResponseBody
     public HashMap<String,Object> checkStaffShow(Staff staff){
@@ -34,6 +42,15 @@ public class CheckController {
         return checkService.showCheckStaff(staff);
     }
 
+    /**
+     * 添加员工的考勤
+     * @param staffUid
+     * @param staffName
+     * @param checkTypeId
+     * @param checkTypeMoney
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "editCheckStaffStatusAndCheck.check",method = RequestMethod.POST)
     @ResponseBody
     public boolean editCheckStaffStatusAndCheck(String staffUid, String staffName, String checkTypeId, String checkTypeMoney, HttpSession session){
@@ -47,11 +64,20 @@ public class CheckController {
         return checkService.editCheckStaffStatusAndCheck(staffUid, staffName, checkTypeId, checkTypeMoney, user.getStaffUid());
     }
 
+    /**
+     * 考勤记录页面
+     * @return
+     */
     @RequestMapping(value = "toCheckIndex.check",method = RequestMethod.GET)
     public String toCheckIndex(){
         return "check/checkIndex";
     }
 
+    /**
+     * 分页查询考勤页面
+     * @param check
+     * @return
+     */
     @RequestMapping(value = "showCheckRecord.check",method = RequestMethod.GET)
     @ResponseBody
     public HashMap<String,Object> showCheckRecord(Check check){
@@ -61,6 +87,11 @@ public class CheckController {
         return checkService.showCheckRecord(check);
     }
 
+    /**
+     * 删除考勤记录
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "removeCheckRecord.check",method = RequestMethod.GET)
     @ResponseBody
     public boolean removeCheckRecord(String id){

@@ -20,6 +20,11 @@ public class StaffArchivesServiceImpl implements StaffArchivesService {
     @Autowired
     private StaffService staffService;
 
+    /**
+     * 分页获取员工档案
+     * @param staffArchives 档案
+     * @return
+     */
     @Override
     public HashMap<String, Object> getAllStaffArchivesBySql(StaffArchives staffArchives) {
         HashMap<String, Object> map = new HashMap<>();
@@ -41,6 +46,11 @@ public class StaffArchivesServiceImpl implements StaffArchivesService {
         return map;
     }
 
+    /**
+     * 修改档案
+     * @param staffArchives 档案
+     * @return
+     */
     @Override
     public boolean editStaffArchives(StaffArchives staffArchives) {
         int index = staffArchivesMapper.updateByPrimaryKeySelective(staffArchives);
@@ -50,6 +60,11 @@ public class StaffArchivesServiceImpl implements StaffArchivesService {
         return false;
     }
 
+    /**
+     * 删除档案
+     * @param ids id[]
+     * @return
+     */
     @Override
     public boolean removeStaffArchives(String ids) {
         boolean flag = true;
@@ -63,6 +78,11 @@ public class StaffArchivesServiceImpl implements StaffArchivesService {
         return flag;
     }
 
+    /**
+     * 删除档案
+     * @param staffUid 员工编号
+     * @return
+     */
     @Override
     public boolean removeByStaffUid(String staffUid) {
         boolean flag = false;
@@ -73,11 +93,21 @@ public class StaffArchivesServiceImpl implements StaffArchivesService {
         return flag;
     }
 
+    /**
+     * 批量删除
+     * @param staffUidList 员工编号
+     * @return
+     */
     @Override
     public boolean removeBatch(List<String> staffUidList) {
         return staffArchivesMapper.deleteBatch(staffUidList)==0?false:true;
     }
 
+    /**
+     * 增加档案
+     * @param staffArchives 档案
+     * @return
+     */
     @Override
     public boolean addStaffArchives(StaffArchives staffArchives) {
         return staffArchivesMapper.insertSelective(staffArchives) != 1 ? false : true;

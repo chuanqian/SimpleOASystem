@@ -30,6 +30,10 @@ public class PositionServiceImpl implements PositionService {
         return positionMapper.selectByPositionName(positionName);
     }
 
+    /**
+     * 获取全部职位
+     * @return
+     */
     @Override
     public List<Position> getAllPositionBB() {
         List<Position> positions = positionMapper.seleftAllPositionBB();
@@ -49,6 +53,11 @@ public class PositionServiceImpl implements PositionService {
         return positionList;
     }
 
+    /**
+     * 修改职位
+     * @param positionId 职位编号
+     * @return
+     */
     @Override
     public boolean editPositionNumByPositionId(int positionId) {
         Position position = positionMapper.selectByPrimaryKey(positionId);
@@ -58,16 +67,31 @@ public class PositionServiceImpl implements PositionService {
         return b2;
     }
 
+    /**
+     * 修改职位通过id
+     * @param positionId 职位id
+     * @return
+     */
     @Override
     public boolean editPositionNumByJ(int positionId) {
         return positionMapper.updatePositionNumByJ(positionId)!=1?false:true;
     }
 
+    /**
+     * 修改人数
+     * @param positionNameList 职位名称
+     * @return
+     */
     @Override
     public boolean editPositionNumByPositionName(List<String> positionNameList) {
         return positionMapper.updatePositionNumByPositionName(positionNameList)!=0?true:false;
     }
 
+    /**
+     * 删除职位
+     * @param positionIds 职位ids
+     * @return
+     */
     @Override
     public boolean removePositionBatch(String positionIds) {
         String[] pids = positionIds.split(",");
@@ -79,6 +103,11 @@ public class PositionServiceImpl implements PositionService {
     }
 
 
+    /**
+     * 分页查询调动记录
+     * @param position 职位
+     * @return
+     */
     @Override
     public HashMap<String,Object> getAllPositionBySql(Position position) {
         System.out.println("gdfdfdsfgdsgdfs");
@@ -106,11 +135,21 @@ public class PositionServiceImpl implements PositionService {
         return map;
     }
 
+    /**
+     * 修改
+     * @param position 职位
+     * @return
+     */
     @Override
     public boolean editByPrimaryKeySelective(Position position) {
         return positionMapper.updateByPrimaryKeySelective(position)!=1?false:true;
     }
 
+    /**
+     * 增加
+     * @param position
+     * @return
+     */
     @Override
     public boolean addPosition(Position position) {
         return positionMapper.insertSelective(position)!=1?false:true;

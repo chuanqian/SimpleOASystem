@@ -20,17 +20,30 @@ public class PositionController {
     @Autowired
     private DepartmentService departmentService;
 
+    /**
+     * 职位显示页面
+     * @return
+     */
     @RequestMapping(value = "toPosition.position")
     public String toPosition() {
         return "department/position";
     }
 
+    /**
+     * 获取全部的职位信息List
+     * @return
+     */
     @RequestMapping(value = "getAllPosition.position")
     @ResponseBody
     public List<Position> getAllPosition() {
         return positionService.getAllPositionBB();
     }
 
+    /**
+     * 分页获取职位信息
+     * @param position
+     * @return
+     */
     @RequestMapping(value = "getAllPositionBysql.position")
     @ResponseBody
     public HashMap<String, Object> getAllPositionBysql(Position position) {
@@ -40,6 +53,11 @@ public class PositionController {
         return positionService.getAllPositionBySql(position);
     }
 
+    /**
+     * 修改职位信息
+     * @param position
+     * @return
+     */
     @RequestMapping(value = "editPosition.position", method = RequestMethod.POST)
     @ResponseBody
     public boolean editPosition(Position position) {
@@ -59,6 +77,11 @@ public class PositionController {
         return b;
     }
 
+    /**
+     * 增加职位信息
+     * @param position
+     * @return
+     */
     @RequestMapping(value = "addPosition.position",method = RequestMethod.POST)
     @ResponseBody
     public boolean addPosition(Position position){

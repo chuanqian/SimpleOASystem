@@ -17,6 +17,11 @@ public class CheckTypeServiceImpl implements CheckTypeService {
     @Autowired
     private CheckTypeMapper checkTypeMapper;
 
+    /**
+     * 分页查询考情类型状态
+     * @param checkType
+     * @return
+     */
     @Override
     public HashMap<String, Object> getAllCheckTypeBySql(CheckType checkType) {
         checkType.setStart((checkType.getPage() - 1) * checkType.getRows());
@@ -28,16 +33,31 @@ public class CheckTypeServiceImpl implements CheckTypeService {
         return map;
     }
 
+    /**
+     * 修改类型
+     * @param checkType
+     * @return
+     */
     @Override
     public boolean editCheckType(CheckType checkType) {
         return checkTypeMapper.updateByPrimaryKeySelective(checkType) != 0 ? true : false;
     }
 
+    /**
+     * 增加类型
+     * @param checkType 考勤类型
+     * @return
+     */
     @Override
     public boolean addCheckType(CheckType checkType) {
         return checkTypeMapper.insertCheckType(checkType) != 0 ? true : false;
     }
 
+    /**
+     * 删除类型
+     * @param ids ids数组
+     * @return
+     */
     @Override
     public boolean removeCheckType(String ids) {
         String[] checkTypeIds = ids.split(",");
@@ -50,6 +70,10 @@ public class CheckTypeServiceImpl implements CheckTypeService {
         return checkTypeMapper.deleteByCheckTypes(typeIds) != 0 ? true : false;
     }
 
+    /**
+     * 获取全部类型
+     * @return
+     */
     @Override
     public List<CheckType> getAllCheckTypeList() {
         return checkTypeMapper.selectAllCheckType();

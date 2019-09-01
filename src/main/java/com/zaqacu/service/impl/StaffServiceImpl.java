@@ -47,6 +47,11 @@ public class StaffServiceImpl implements StaffService {
     @Autowired
     private PermissionsService permissionsService;
 
+    /**
+     * 分页查询员工信息
+     * @param staff 员工
+     * @return
+     */
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public HashMap<String, Object> getAllStaff(Staff staff) {
@@ -82,11 +87,22 @@ public class StaffServiceImpl implements StaffService {
         return map;
     }
 
+    /**
+     * 通过id获取员工
+     * @param StaffUid 员工编号
+     * @return
+     */
     @Override
     public Staff getOneStaffByUid(String StaffUid) {
         return staffMapper.selectByPrimaryKey(StaffUid);
     }
 
+    /**
+     * 删除员工
+     * @param staffIds 员工编号
+     * @param positionNames 职位名称
+     * @return
+     */
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean removeStaff(String staffIds, String positionNames) {
@@ -119,6 +135,29 @@ public class StaffServiceImpl implements StaffService {
 
     }
 
+    /**
+     * 增加员工
+     * @param userName
+     * @param userPassword
+     * @param staffName
+     * @param staffSex
+     * @param staffBirth
+     * @param staffPhone
+     * @param staffEmail
+     * @param staffXueli
+     * @param staffPosition
+     * @param staffInTime
+     * @param staffStatusId
+     * @param staffNote
+     * @param archivesName
+     * @param archivesInfo
+     * @param archivesNote
+     * @param pactCreateTime
+     * @param pactEndTime
+     * @param pactInfo
+     * @param pactNote
+     * @return
+     */
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean addStaff(String userName, String userPassword,
@@ -204,32 +243,63 @@ public class StaffServiceImpl implements StaffService {
         return b1 && b2 && b3 && b4 && b5 && b6;
     }
 
+    /**
+     * 修改员工
+     * @param staff 员工
+     * @return
+     */
     @Override
     public boolean editStaff(Staff staff) {
         System.out.println("fgdfasdfdf");
         return staffMapper.updateByPrimaryKeySelective(staff) != 1 ? false : true;
     }
 
+    /**
+     * 获取全部员工
+     * @param staff
+     * @return
+     */
     @Override
     public List<Staff> getAllStaffByPersonnel(Staff staff) {
         return staffMapper.selectAllStaffByPersonnel(staff);
     }
 
+    /**
+     * 根据职位获取员工
+     * @param positionName 职位名称
+     * @return
+     */
     @Override
     public List<String> getAllPositionByPositionName(String positionName) {
         return staffMapper.selectAllPositionByPositionName(positionName);
     }
 
+    /**
+     * 查询员工总条数
+     * @return
+     */
     @Override
     public int getCountStaff() {
         return staffMapper.selectCountStaff();
     }
 
+    /**
+     * 获取员工信息
+     * @param staffUidList 员工编号ids
+     * @return
+     */
     @Override
     public List<Staff> getAllStaffByStaffUidList(List<String> staffUidList) {
         return staffMapper.selectAllStaffByStaffUidList(staffUidList);
     }
 
+    /**
+     * 授权
+     * @param staffUid 员工编号
+     * @param StaffName 员工信息
+     * @param roleIds 角色编号
+     * @return
+     */
     @Override
     public boolean toGiveEnable(String staffUid, String StaffName, String roleIds) {
         int userId = loginAndOutService.getByStaffUid(staffUid);

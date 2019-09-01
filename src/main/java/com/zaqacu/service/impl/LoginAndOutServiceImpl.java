@@ -20,21 +20,41 @@ public class LoginAndOutServiceImpl implements LoginAndOutService {
     private PermissionsService permissionsService;
 
 
+    /**
+     * 查询用户
+     * @param userName 账户名
+     * @return
+     */
     @Override
     public boolean getOneUserLoginByUserName(String userName) {
         return userLoginMapper.selectByUserName(userName) != null ? false : true;
     }
 
+    /**
+     * 增加账户
+     * @param userLogin 账户
+     * @return
+     */
     @Override
     public boolean addUserLogin(UserLogin userLogin) {
         return userLoginMapper.insertSelective(userLogin) != 1 ? false : true;
     }
 
+    /**
+     * 删除账户
+     * @param staffUidList
+     * @return
+     */
     @Override
     public boolean deleteByStaffUidList(List<String> staffUidList) {
         return userLoginMapper.deleteBatch(staffUidList) != 0 ? true : false;
     }
 
+    /**
+     * 获取账户
+     * @param staffUid 员工编号
+     * @return
+     */
     @Override
     public int getByStaffUid(String staffUid) {
         return userLoginMapper.selectByStaffUid(staffUid);

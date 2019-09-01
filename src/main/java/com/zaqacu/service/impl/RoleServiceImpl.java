@@ -14,6 +14,10 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleMapper roleMapper;
 
+    /**
+     * 获取全部角色
+     * @return
+     */
     @Override
     public List<Role> getAllRole() {
         return roleMapper.selectAllRole();

@@ -11,6 +11,12 @@ public class TrainingResultServiceImpl implements TrainingResultService {
 
     @Autowired
     private TrainingResultMapper trainingResultMapper;
+
+    /**
+     * 获取培训结果
+     * @param trainingResultId
+     * @return
+     */
     @Override
     public TrainingResult getOneTrainingResult(int trainingResultId) {
         return trainingResultMapper.selectByPrimaryKey(trainingResultId);

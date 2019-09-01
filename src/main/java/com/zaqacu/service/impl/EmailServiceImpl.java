@@ -14,6 +14,13 @@ public class EmailServiceImpl implements EmailService {
     private JavaMailSender mailSender;
 
 
+    /**
+     * 发送邮件
+     * @param from 发送号
+     * @param to 接收号
+     * @param subject 标题
+     * @param content 类型
+     */
     @Override
     public void sendEmailCheck(String from, String to, String subject, String content) {
 

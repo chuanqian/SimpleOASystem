@@ -26,6 +26,11 @@ public class PersonnelServiceImpl implements PersonnelService {
     @Autowired
     private PersonnelMapper personnelMapper;
 
+    /**
+     * 查询考勤员工信息
+     * @param staff 员工
+     * @return
+     */
     @Override
     public HashMap<String,Object> getAllStaffAndPosition(Staff staff) {
         staff.setStart((staff.getPage()-1)*staff.getRows());
@@ -50,6 +55,15 @@ public class PersonnelServiceImpl implements PersonnelService {
         return map;
     }
 
+    /**
+     * 增加人事调动记录
+     * @param personnelStaffUid 调动员工编号
+     * @param sName 名称
+     * @param positionName 职位
+     * @param personnelNewPositionId 新职位id
+     * @param personnelCause 原因
+     * @return
+     */
     @Override
     public boolean editPersonnelByPosition(String personnelStaffUid, String sName, String positionName, String personnelNewPositionId, String personnelCause) {
 //
@@ -80,6 +94,11 @@ public class PersonnelServiceImpl implements PersonnelService {
         return b1 && b2;
     }
 
+    /**
+     * 分页获取全部信息
+     * @param personnel 人事
+     * @return
+     */
     @Override
     public HashMap<String, Object> getAllPersonnelBySql(Personnel personnel) {
         HashMap<String, Object> map = new HashMap<>();
@@ -104,6 +123,11 @@ public class PersonnelServiceImpl implements PersonnelService {
         return map;
     }
 
+    /**
+     * 删除
+     * @param personnelIds 人事记录编号数组
+     * @return
+     */
     @Override
     public boolean removePersonnel(String personnelIds) {
         System.out.println(personnelIds);
@@ -118,6 +142,11 @@ public class PersonnelServiceImpl implements PersonnelService {
 
     }
 
+    /**
+     * 批量删除
+     * @param staffUidList 员工编号
+     * @return
+     */
     @Override
     public boolean removeBatchByStaffUid(List<String> staffUidList) {
         return personnelMapper.deleteBatchByStaffUid(staffUidList) != 0 ? true : false;

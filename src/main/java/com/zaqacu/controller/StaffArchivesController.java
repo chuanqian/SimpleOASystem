@@ -15,12 +15,21 @@ public class StaffArchivesController {
     @Autowired
     private StaffArchivesService staffArchivesService;
 
+    /**
+     * 档案显示页面
+     * @return
+     */
     @RequestMapping("toStaffArchives.staff")
     public String toStaffArchives(){
         return "staff/archives";
     }
 
 
+    /**
+     * 分页获取合档案信息
+     * @param staffArchives
+     * @return
+     */
     @RequestMapping("getAllArchivesBySql.staff")
     @ResponseBody
     public HashMap<String,Object> getAllArchivesBySql(StaffArchives staffArchives){
@@ -30,12 +39,22 @@ public class StaffArchivesController {
         return staffArchivesService.getAllStaffArchivesBySql(staffArchives);
     }
 
+    /**
+     * 修改档案信息
+     * @param staffArchives
+     * @return
+     */
     @RequestMapping("editArchives.staff")
     @ResponseBody
     public boolean editArchives(StaffArchives staffArchives){
         return staffArchivesService.editStaffArchives(staffArchives);
     }
 
+    /**
+     * 删除档案信息
+     * @param id
+     * @return
+     */
     @RequestMapping("removeArchives.staff")
     public boolean removeArchives(String id){
         System.out.println(id);

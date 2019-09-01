@@ -23,6 +23,11 @@ public class StaffPactServiceImpl implements StaffPactService {
     @Autowired
     private StaffService staffService;
 
+    /**
+     * 分页查询合同信息
+     * @param staffPact 合同
+     * @return
+     */
     @Override
     public HashMap<String, Object> getAllPactBySql(StaffPact staffPact) {
         HashMap<String, Object> map = new HashMap<>();
@@ -49,6 +54,11 @@ public class StaffPactServiceImpl implements StaffPactService {
         return map;
     }
 
+    /**
+     * 修改合同
+     * @param staffPact 合同
+     * @return
+     */
     @Override
     public boolean editStaffPactById(StaffPact staffPact) {
         boolean flag = true;
@@ -59,6 +69,11 @@ public class StaffPactServiceImpl implements StaffPactService {
         return flag;
     }
 
+    /**
+     * 输出合同
+     * @param staffUid 员工编号
+     * @return
+     */
     @Override
     public boolean removeByStaffUid(String staffUid) {
         boolean flag = false;
@@ -69,11 +84,21 @@ public class StaffPactServiceImpl implements StaffPactService {
         return flag;
     }
 
+    /**
+     * 批量删除
+     * @param staffUidList 员工编号List
+     * @return
+     */
     @Override
     public boolean removeBatch(List<String> staffUidList) {
         return staffPactMapper.deleteBatch(staffUidList) == 0 ? false : true;
     }
 
+    /**
+     * 增加
+     * @param staffPact 合同
+     * @return
+     */
     @Override
     public boolean addStaffPact(StaffPact staffPact) {
         return staffPactMapper.insertSelective(staffPact) != 1 ? false : true;

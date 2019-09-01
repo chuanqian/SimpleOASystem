@@ -17,11 +17,20 @@ public class StaffController {
     @Autowired
     private StaffService staffService;
 
+    /**
+     * 员工展示页面
+     * @return
+     */
     @GetMapping(value = "toStaffIndex.staff")
     public String toStaffIndex() {
         return "staff/index";
     }
 
+    /**
+     * 分页获取员工信息页面
+     * @param staff
+     * @return
+     */
     @GetMapping(value = "getAllStaff.staff")
     @ResponseBody
     public HashMap<String, Object> getAllStaff(Staff staff) {
@@ -31,6 +40,12 @@ public class StaffController {
         return staffService.getAllStaff(staff);
     }
 
+    /**
+     * 删除员工信息
+     * @param id
+     * @param positionNames
+     * @return
+     */
     @RequestMapping("removeStaff.staff")
     @ResponseBody
     public boolean removeStaff(String id,String positionNames) {
@@ -38,6 +53,29 @@ public class StaffController {
         return staffService.removeStaff(id,positionNames);
     }
 
+    /**
+     * 新增员工，账户，合同，档案信息
+     * @param userName 员工账户名
+     * @param userPassword  员工密码
+     * @param staffName 员工姓名
+     * @param staffSex 员工性别
+     * @param staffBirth 员工出生日期
+     * @param staffPhone 员工电话
+     * @param staffEmail 员工邮箱
+     * @param staffXueli 员工学历
+     * @param staffPosition 员工职位
+     * @param staffInTime 员工入职时间
+     * @param staffStatusId 员工状态ID
+     * @param staffNote 员工备注
+     * @param archivesName 档案名称
+     * @param archivesInfo 档案内容
+     * @param archivesNote 档案备注
+     * @param pactCreateTime 合同开始时间
+     * @param pactEndTime 合同结束时间
+     * @param pactInfo 合同内容
+     * @param pactNote 合同备注
+     * @return
+     */
     @RequestMapping("addStaffAndUserLoginAndArchivesAndPact.staff")
     @ResponseBody
     public boolean addStaffAndUserLoginAndArchivesAndPact(String userName, String userPassword,
@@ -57,12 +95,24 @@ public class StaffController {
         return b;
     }
 
+    /**
+     * 修改员工共信息
+     * @param staff 员工信息
+     * @return
+     */
     @RequestMapping(value = "updateStaff.staff",method = RequestMethod.POST)
     @ResponseBody
     public boolean updateStaff(Staff staff){
         return staffService.editStaff(staff);
     }
 
+    /**
+     * 添加权限
+     * @param staffUid
+     * @param staffName
+     * @param roleIds
+     * @return
+     */
     @RequestMapping(value = "toGiveEnable.enable")
     @ResponseBody
     public boolean toGiveEnable(String staffUid,String staffName,String roleIds){

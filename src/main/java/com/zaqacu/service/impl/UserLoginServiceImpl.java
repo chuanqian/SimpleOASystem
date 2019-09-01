@@ -12,6 +12,11 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Autowired
     private UserLoginMapper userLoginMapper;
 
+    /**
+     * 查询账户
+     * @param userName
+     * @return
+     */
     @Override
     public UserLogin getOneUserLoginByUsername(String userName) {
         return userLoginMapper.selectByUserName(userName);

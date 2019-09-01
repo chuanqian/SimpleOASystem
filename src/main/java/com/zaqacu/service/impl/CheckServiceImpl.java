@@ -35,6 +35,11 @@ public class CheckServiceImpl implements CheckService {
     @Autowired
     private CheckTypeMapper checkTypeMapper;
 
+    /**
+     * 分页查询考勤员工信息
+     * @param staff 员工
+     * @return
+     */
     @Override
     public HashMap<String, Object> showCheckStaff(Staff staff) {
         HashMap<String, Object> map = new HashMap<>();
@@ -61,6 +66,15 @@ public class CheckServiceImpl implements CheckService {
         return map;
     }
 
+    /**
+     * 修改考勤
+     * @param beiStaffUid 被考勤员工编号
+     * @param staffName 员工姓名
+     * @param checkTypeId
+     * @param checkTypeMoney 考勤类型金额
+     * @param staffUid 考勤人员工编号
+     * @return
+     */
     @Override
     public boolean editCheckStaffStatusAndCheck(String beiStaffUid, String staffName, String checkTypeId, String checkTypeMoney, String staffUid) {
         if (CheckTypeConstant.ALREADYCHECK.equals(checkStaffStatusMapper.selectByStaffUid(staffUid))) {
@@ -78,6 +92,11 @@ public class CheckServiceImpl implements CheckService {
         return b1 && b2;
     }
 
+    /**
+     * 获取考勤记录
+     * @param check 考勤
+     * @return
+     */
     @Override
     public HashMap<String, Object> showCheckRecord(Check check) {
         HashMap<String,Object> map=new HashMap<>();
@@ -100,6 +119,11 @@ public class CheckServiceImpl implements CheckService {
         return map;
     }
 
+    /**
+     * 删除
+     * @param id 考勤编号数组
+     * @return
+     */
     @Override
     public boolean removeCheckRecord(String id) {
         String[] ids=id.split(",");
@@ -110,6 +134,13 @@ public class CheckServiceImpl implements CheckService {
         return checkMapper.deleteCheckRecordBatch(checkIds)!=0?true:false;
     }
 
+    /**
+     * 计算薪酬
+     * @param staffUid 员工编号id
+     * @param firstDay 这个月的第一天
+     * @param exitsDay 当前结算时间
+     * @return
+     */
     @Override
     public List<Double> getAllCheckByStaffUidAndDate(String staffUid, Date firstDay, Date exitsDay) {
         return checkMapper.selectAllCheckByStaffUidAndDate(staffUid,firstDay,exitsDay);

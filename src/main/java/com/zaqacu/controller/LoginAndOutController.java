@@ -27,11 +27,23 @@ public class LoginAndOutController {
     @Autowired
     private LoginAndOutService loginAndOutService;
 
+    /**
+     * 登录页面
+     * @return
+     */
     @RequestMapping("toLogin.login")
     public String toLogin() {
         return "jsp/login";
     }
 
+    /**
+     * 员工登录
+     * @param userName 用户名
+     * @param userPassword  密码
+     * @param map 装入信息
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "login.login", method = RequestMethod.POST)
     public String login(String userName, String userPassword, Map<String, Object> map, HttpSession session) {
         System.err.println(userName);
@@ -55,11 +67,22 @@ public class LoginAndOutController {
 
     }
 
+    /**
+     * 主页
+     * @return
+     */
     @RequestMapping("toIndex.do")
     public String toIndex() {
         return "jsp/index";
     }
 
+    /**
+     * 安全推出
+     * @param httpServletRequest
+     * @param response
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "Out.login")
     public String Out(HttpServletRequest httpServletRequest, HttpServletResponse response, HttpSession session) {
         Enumeration<String> enumeration = httpServletRequest.getSession().getAttributeNames();
@@ -82,6 +105,10 @@ public class LoginAndOutController {
         return "jsp/homepage";
     }
 
+    /**
+     * 权限不够跳转的页面
+     * @return
+     */
     @RequestMapping("toError.login")
     public String toError(){
         return "jsp/error";

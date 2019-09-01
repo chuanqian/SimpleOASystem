@@ -16,6 +16,10 @@ public class StaffStatusController {
     @Autowired
     private StaffStatusService staffStatusService;
 
+    /**
+     * 获取员工状态List
+     * @return
+     */
     @RequestMapping(value = "getAllStaffStatus.status",method = RequestMethod.POST)
     @ResponseBody
     public List<StaffStatus> getAllStaffStatus(){

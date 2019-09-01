@@ -16,6 +16,11 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
 
+    /**
+     * 分页获取部门信息
+     * @param department
+     * @return
+     */
     @GetMapping(value = "getAllDepartmentBySql.department")
     @ResponseBody
     public HashMap<String,Object> getAllDepartment(Department department) {
@@ -24,6 +29,11 @@ public class DepartmentController {
         }
         return departmentService.getAllDepartment(department);
     }
+
+    /**
+     * 部门展示页面
+     * @return
+     */
     @GetMapping(value = "toDepartment.department")
     public String toDepartment(){
         return "department/department";
@@ -91,6 +101,10 @@ public class DepartmentController {
         return departmentService.getAllDepartmentBB();
     }
 
+    /**
+     * 获取全部部门信息
+     * @return
+     */
     @RequestMapping(value = "getAllDepartmentAA.department")
     @ResponseBody
     public List<Department> getAllDepartmentAA(){

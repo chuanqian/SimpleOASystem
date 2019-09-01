@@ -12,11 +12,21 @@ import java.util.List;
 public class StaffStatusServiceImpl implements StaffStatusService {
     @Autowired
     private StaffStatusMapper staffStatusMapper;
+
+    /**
+     * 根据员工编号获取状态
+     * @param staffStatusId  id
+     * @return
+     */
     @Override
     public StaffStatus getOneStaffStatusById(int staffStatusId) {
         return staffStatusMapper.selectByPrimaryKey(staffStatusId);
     }
 
+    /**
+     * 获取状态
+     * @return
+     */
     @Override
     public List<StaffStatus> getAllStaffStatusBB() {
         return staffStatusMapper.selectAllStaffStatusBB();

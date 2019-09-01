@@ -14,6 +14,11 @@ public class CheckStaffStatusServiceImpl implements CheckStaffStatusService {
     @Autowired
     private CheckStaffStatusMapper checkStaffStatusMapper;
 
+    /**
+     * 增加考勤状态
+     * @param staffUid 员工编号
+     * @return
+     */
     @Override
     public boolean addCheckStaffStatusByStaffUid(String staffUid) {
         CheckStaffStatus checkStaffStatus = new CheckStaffStatus();
@@ -21,11 +26,22 @@ public class CheckStaffStatusServiceImpl implements CheckStaffStatusService {
         return checkStaffStatusMapper.insertSelective(checkStaffStatus) != 0 ? true : false;
     }
 
+    /**
+     * 删除
+     * @param staffUidList
+     * @return
+     */
     @Override
     public boolean removeBatchByStaffUid(List<String> staffUidList) {
         return checkStaffStatusMapper.deleteBatchByStaffUid(staffUidList) != 0 ? true : false;
     }
 
+    /**
+     * 修改
+     * @param staffUid 员工编号
+     * @param checkStaffStatusName 状态名称
+     * @return
+     */
     @Override
     public boolean editByStaffUidAndStatusName(String staffUid, String checkStaffStatusName) {
 
@@ -36,11 +52,21 @@ public class CheckStaffStatusServiceImpl implements CheckStaffStatusService {
 
     }
 
+    /**
+     * 获取员工名
+     * @param staffUid
+     * @return
+     */
     @Override
     public String getByStaffUid(String staffUid) {
         return checkStaffStatusMapper.selectByStaffUid(staffUid);
     }
 
+    /**
+     * 定时改变状态
+     * @param checkStaffStatusName
+     * @return
+     */
     @Override
     public int editStatusNameByTimes(String checkStaffStatusName) {
         return checkStaffStatusMapper.updateStatusNameByTimes(checkStaffStatusName);

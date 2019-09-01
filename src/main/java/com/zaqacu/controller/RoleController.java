@@ -15,6 +15,10 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
+    /**
+     * 获取全部的角色信息
+     * @return
+     */
     @RequestMapping("getAllRole.role")
     @ResponseBody
     public List<Role> getAllRole(){
