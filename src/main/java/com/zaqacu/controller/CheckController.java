@@ -51,16 +51,17 @@ public class CheckController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "editCheckStaffStatusAndCheck.check",method = RequestMethod.POST)
+    @RequestMapping(value = "editCheckStaffStatusAndCheck.check")
     @ResponseBody
     public boolean editCheckStaffStatusAndCheck(String staffUid, String staffName, String checkTypeId, String checkTypeMoney, HttpSession session){
         //String beiStaffUid, String staffName, String checkTypeId, String checkTypeMoney, String staffUid
-//        System.out.println(staffUid);
-//        System.out.println(staffName);
-//        System.out.println(checkTypeId);
-//        System.out.println(checkTypeMoney);
+        System.out.println(staffUid);
+        System.out.println(staffName);
+        System.out.println(checkTypeId);
+        System.out.println(checkTypeMoney);
         UserLogin user = (UserLogin) session.getAttribute("user");
         System.out.println(user);
+        System.out.println(user.getStaffUid());
         return checkService.editCheckStaffStatusAndCheck(staffUid, staffName, checkTypeId, checkTypeMoney, user.getStaffUid());
     }
 

@@ -56,7 +56,7 @@ public class CheckServiceImpl implements CheckService {
             for (int i = 0; i < staffList.size(); i++) {
                 CheckShowStaffDto checkShowStaffDto = new CheckShowStaffDto();
                 checkShowStaffDto.setStaff(staffList.get(i));
-                checkShowStaffDto.setCheckStaffStatus(checkStaffStatuses.get(i));
+                checkShowStaffDto.setCheckStaffStatus(checkStaffStatusMapper.selectOneCheckStatus(staffList.get(i).getStaffUid()));
                 checkShowStaffDtos.add(checkShowStaffDto);
             }
             total = staffMapper.selectCountStaff();
@@ -77,11 +77,15 @@ public class CheckServiceImpl implements CheckService {
      */
     @Override
     public boolean editCheckStaffStatusAndCheck(String beiStaffUid, String staffName, String checkTypeId, String checkTypeMoney, String staffUid) {
-        if (CheckTypeConstant.ALREADYCHECK.equals(checkStaffStatusMapper.selectByStaffUid(staffUid))) {
+        System.out.println(beiStaffUid);
+        System.out.println(checkStaffStatusMapper.selectByStaffUid(beiStaffUid));
+        if (CheckTypeConstant.ALREADYCHECK.equals(checkStaffStatusMapper.selectByStaffUid(beiStaffUid))) {
             System.out.println("fdfgfdgdfgsdfgfd");
             return false;
         }
+        System.out.println("今天");
         boolean b1 = checkStaffStatusService.editByStaffUidAndStatusName(beiStaffUid, CheckTypeConstant.ALREADYCHECK);
+        System.out.println(b1);
         Check check = new Check();
         check.setCheckBeiStaffUid(beiStaffUid);
         check.setCheckMoney(Double.parseDouble(checkTypeMoney));
@@ -89,6 +93,7 @@ public class CheckServiceImpl implements CheckService {
         check.setCheckStaffUid(staffUid);
         check.setCheckTypeId(Integer.parseInt(checkTypeId));
         boolean b2 = checkMapper.insertSelective(check) != 0 ? true : false;
+        System.out.println(b2);
         return b1 && b2;
     }
 

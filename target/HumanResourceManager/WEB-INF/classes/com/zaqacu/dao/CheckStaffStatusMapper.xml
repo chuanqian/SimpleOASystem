@@ -31,6 +31,13 @@
         </foreach>
     </select>
 
+    <select id="selectOneCheckStatus" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from check_staff_status
+        where check_staff_status_uid=#{staffUid};
+    </select>
+
     <select id="selectByStaffUid" resultType="String">
         select check_staff_status_name from check_staff_status where check_staff_status_uid=#{checkStaffStatusUid}
     </select>
