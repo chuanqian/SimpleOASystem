@@ -11,4 +11,14 @@ public interface UserLoginService {
      */
     UserLogin getOneUserLoginByUsername(String userName);
 
+    /**
+     * 修改密码
+     * @param staffUid
+     * @param newPassword
+     * @return
+     */
+    boolean editPassword(String staffUid,String newPassword);
+
+    String queryUserName(String staffUid);
+
 }

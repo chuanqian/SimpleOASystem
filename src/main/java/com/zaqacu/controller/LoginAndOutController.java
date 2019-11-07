@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -77,7 +78,7 @@ public class LoginAndOutController {
     }
 
     /**
-     * 安全推出
+     * 安全退出
      * @param httpServletRequest
      * @param response
      * @param session
@@ -112,6 +113,18 @@ public class LoginAndOutController {
     @RequestMapping("toError.login")
     public String toError(){
         return "jsp/error";
+    }
+
+    /**
+     * 修改密码
+     * @param staffUid
+     * @param newPassword
+     * @return
+     */
+    @RequestMapping(value = "/editPassword.enable",method={RequestMethod.GET,RequestMethod.POST})
+    @ResponseBody
+    public boolean editPassword(String staffName,String staffUid,String newPassword){
+        return userLoginService.editPassword(staffUid,newPassword);
     }
 
 }

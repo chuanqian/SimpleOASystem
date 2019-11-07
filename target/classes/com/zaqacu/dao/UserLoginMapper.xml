@@ -151,4 +151,12 @@
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 
+    <update id="updatePassword">
+        update userlogin set user_password = #{userPassword} where staff_uid = #{staffUid,jdbcType=VARCHAR}
+    </update>
+
+    <select id="queryUserName" resultType="String">
+        select user_name from userlogin where staff_uid=#{staffUid}
+    </select>
+
 </mapper>

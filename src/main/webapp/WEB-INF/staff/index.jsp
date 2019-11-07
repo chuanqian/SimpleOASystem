@@ -35,18 +35,8 @@
                 <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openAdd()" plain="true">添加</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-edit" onclick="openEdit()" plain="true">修改</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-remove" onclick="remove()" plain="true">删除</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-add" onclick="openenable()" plain="true">授权</a>
-                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="cancel()" plain="true">取消</a>--%>
-                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-reload" onclick="reload()" plain="true">刷新</a>--%>
-                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-print" onclick="openAdd()" plain="true">打印</a>--%>
-                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-help" onclick="openEdit()" plain="true">帮助</a>--%>
-                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-undo" onclick="remove()" plain="true">撤销</a>--%>
-                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-redo" onclick="cancel()" plain="true">重做</a>--%>
-                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-sum" onclick="reload()" plain="true">总计</a>--%>
-                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-back" onclick="reload()" plain="true">返回</a>--%>
-                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="reload()" plain="true">提示</a>--%>
-                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-save" onclick="reload()" plain="true">保存</a>--%>
-                <%--                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" onclick="reload()" plain="true">剪切</a>--%>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="openenable()" plain="true">授权</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-tip" onclick="openEditPassword()" plain="true">修改密码</a>
             </div>
             <div class="wu-toolbar-search">
                 <label>入职起始时间：</label><input id="starttime" class="easyui-datebox" style="width:100px">
@@ -66,7 +56,7 @@
 </div>
 <!-- 模态框开始 -->
 <div id="wu-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'"
-     style="width:400px; padding:10px;">
+     style="overflow:auto;width:400px;height: 300px; padding:10px;">
     <form id="wu-form" method="post">
         <table>
             <tr>
@@ -263,6 +253,25 @@
             <tr>
                 <td align="right">员工备注:</td>
                 <td><input type="text" name="staffNote" class="wu-text"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<!-- 授权模态框 -->
+<div id="editPassword-dialog" class="easyui-dialog" data-options="closed:true,iconCls:'icon-save'"
+     style="width:400px; padding:10px;">
+    <form id="editPassword-form" method="post">
+        <table>
+            <tr>
+                <td width="60" align="right">员工姓名:</td>
+                <td>
+                    <input type="hidden" name="staffUid" class="wu-text" readonly="readonly"/>
+                    <input type="text" name="staffName" class="wu-text" readonly="readonly"/>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">新密吗:</td>
+                <td><input type="password" name="newPassword" class="wu-text"/></td>
             </tr>
         </table>
     </form>
@@ -494,6 +503,22 @@
                 }
             }
         });
+
+    }
+    function enablePassword() {
+        $('#editPassword-form').form('submit',{
+            url: 'editPassword.enable',
+            success:function (data) {
+                var data = eval('('+data+')');
+                if(data){
+                    $.messager.alert('信息提示','修改成功','info');
+                    $('#editPassword-dialog').dialog('close');
+                    $('#wu-datagrid').datagrid("load");
+                }else{
+                    $.messager.alert('信息提示','修改失败','info');
+                }
+            }
+        })
     }
 
     /*
@@ -538,6 +563,42 @@
 
     }
 
+    /*
+    * 打开修改密码模态框
+    */
+    function openEditPassword() {
+
+        //获取选中行
+        var item = $('#wu-datagrid').datagrid('getSelected');
+        console.log(item);
+        if (item == null) {
+            $.messager.alert('信息提示', '请选中行！', 'info');
+            return;
+        }
+        $('#editPassword-form').form('clear');
+        //绑定值
+        $('#editPassword-form').form('load', item);
+
+
+        $('#editPassword-dialog').dialog({
+            closed: false,
+            modal: true,
+            title: "分配权限",
+            buttons: [{
+                text: '确定',
+                iconCls: 'icon-ok',
+                handler: enablePassword
+            }, {
+                text: '取消',
+                iconCls: 'icon-cancel',
+                handler: function () {
+                    $('#editPassword-dialog').dialog('close');
+                }
+            }]
+        });
+
+    }
+
 
     /**
      * 打开添加窗口
@@ -557,15 +618,6 @@
             valueField: "staffStatusId", //相当于 option 中的 value 发送到后台的
             textField: "staffStatusName"//option中间的内容 显示给用户看的
         });
-
-        /*$("#limit").combobox({
-            url: "getAllPermissionsList.permissions",//url*
-            valueField: "permissionsId", //相当于 option 中的 value 发送到后台的
-            textField: "permissionsName",//option中间的内容 显示给用户看的
-            multiple:true,
-            panelHeight:'200',
-            panelWidth:'300'
-        });*/
 
         $('#wu-dialog').dialog({
             closed: false,

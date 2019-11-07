@@ -166,12 +166,9 @@ public class StaffServiceImpl implements StaffService {
                             String staffInTime, String staffStatusId, String staffNote, String archivesName,
                             String archivesInfo, String archivesNote, String pactCreateTime, String pactEndTime,
                             String pactInfo, String pactNote) {
-//        System.out.println(limitName);
-//        System.out.println(userName);
         if (!loginAndOutService.getOneUserLoginByUserName(userName)) {
             return false;
         }
-//        System.out.println(userPassword);
         String saltPassword = SaltUtils.getSaltPassword(userPassword, userName);
         String staffUid = UUIDUtils.getOneUUId();
         UserLogin userLogin = new UserLogin();
@@ -179,17 +176,6 @@ public class StaffServiceImpl implements StaffService {
         userLogin.setUserName(userName);
         userLogin.setUserPassword(saltPassword);
         userLogin.setStaffUid(staffUid);
-//        System.out.println(staffName);
-//        System.out.println(staffSex);
-//        System.out.println(staffBirth);
-//        System.out.println(staffPhone);
-//        System.out.println(staffEmail);
-//        System.out.println(staffXueli);
-//        System.out.println(staffDepartmentId);
-//        System.out.println(staffPosition);
-//        System.out.println(staffInTime);
-//        System.out.println(staffStatusId);
-//        System.out.println(staffNote);
         Staff staff = new Staff();
         staff.setStaffUid(staffUid);
         staff.setStaffName(staffName);
@@ -203,18 +189,11 @@ public class StaffServiceImpl implements StaffService {
         staff.setStaffInTime(staffInTime);
         staff.setStaffStatusId(Integer.parseInt(staffStatusId.trim()));
         staff.setStaffNote(staffNote);
-//        System.out.println(archivesName);
-//        System.out.println(archivesInfo);
-//        System.out.println(archivesNote);
         StaffArchives staffArchives = new StaffArchives();
         staffArchives.setArchivesName(archivesName);
         staffArchives.setArchivesInfo(archivesInfo);
         staffArchives.setArchivesNote(archivesNote);
         staffArchives.setArcivesStaffUid(staffUid);
-//        System.out.println(pactCreateTime);
-//        System.out.println(pactEndTime);
-//        System.out.println(pactInfo);
-//        System.out.println(pactNote);
         StaffPact staffPact = new StaffPact();
         staffPact.setPactStaffUid(staffUid);
         staffPact.setPactCreateTime(pactCreateTime);
@@ -222,24 +201,12 @@ public class StaffServiceImpl implements StaffService {
         staffPact.setPactInfo(pactInfo);
         staffPact.setPactNote(pactNote);
         staffPact.setPactStaffPositionId(Integer.parseInt(staffPosition.trim()));
-
-//        System.out.println("aaaaa");
         boolean b1 = loginAndOutService.addUserLogin(userLogin);
-//        System.out.println("bbbbb");
         boolean b2 = staffArchivesService.addStaffArchives(staffArchives);
-//        System.out.println("ccccc");
         boolean b3 = staffPactService.addStaffPact(staffPact);
-//        System.out.println("dddddd");
         boolean b4 = staffMapper.insertSelective(staff) != 1 ? false : true;
-//        System.out.println("eeeee");
         boolean b5 = positionService.editPositionNumByPositionId(Integer.parseInt(staffPosition.trim()));
         boolean b6 = checkStaffStatusService.addCheckStaffStatusByStaffUid(staffUid);
-//        System.out.println("ffffff");
-//        System.out.println(b1);
-//        System.out.println(b2);
-//        System.out.println(b3);
-//        System.out.println(b4);
-//        System.out.println(b5);
         return b1 && b2 && b3 && b4 && b5 && b6;
     }
 

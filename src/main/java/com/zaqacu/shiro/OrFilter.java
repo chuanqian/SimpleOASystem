@@ -23,21 +23,21 @@ public class OrFilter extends AuthorizationFilter {
         }
         //如果没有设置权限参数，默认成功
         if (perms == null || perms.length == 0) {
+        return true;
+    }
+        for (String perm: perms) {
+        System.out.println();
+        System.out.println();
+        System.out.println("进来"+perm);
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        //若当前用户是rolesArray中的任何一个，则有权限访问
+        if (subject.hasRole(perm)) {
+            System.err.println("当前用户拥有权限："+perm+",允许访问");
             return true;
         }
-        for (String perm: perms) {
-            System.out.println();
-            System.out.println();
-            System.out.println("进来"+perm);
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            //若当前用户是rolesArray中的任何一个，则有权限访问
-            if (subject.hasRole(perm)) {
-                System.err.println("当前用户拥有权限："+perm+",允许访问");
-                return true;
-            }
-        }
-        return false;
     }
+        return false;
+}
 }

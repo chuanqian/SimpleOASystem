@@ -34,4 +34,8 @@ public interface UserLoginMapper {
     int selectAllCount();
 
     List<String> selectRoleNames(String userName);
+
+    int updatePassword(UserLogin userLogin);
+
+    String queryUserName(String staffUid);
 }
